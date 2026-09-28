@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Market Stress Dashboard working paper: valuation vulnerability, discount-rate shocks, and earnings confirmation."><title>Whitepaper | Market Stress Dashboard</title><style>*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:#09111f;color:#eef4ff;font-family:system-ui,-apple-system,sans-serif;line-height:1.75}.wrap{max-width:1160px;margin:auto;padding:28px 22px 64px}a{color:#8fc5ff;text-underline-offset:3px}a:focus-visible{outline:2px solid #8fc5ff;outline-offset:4px}.nav{display:flex;justify-content:space-between;gap:20px;margin-bottom:40px}.eyebrow{color:#8fc5ff;font-size:13px;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(34px,5vw,54px);letter-spacing:-.035em;line-height:1.15;margin:12px 0 18px}header{max-width:900px}.subtitle{font-size:21px;color:#b9c8dd;line-height:1.5}.meta{display:flex;gap:10px 24px;flex-wrap:wrap;color:#91a4bf;font-size:14px}.context{margin:24px 0 34px;padding:18px 22px;border:1px solid #33465f;border-radius:12px;background:#111d31;color:#b9c8dd;font-size:14px}.layout{display:grid;grid-template-columns:235px minmax(0,1fr);gap:40px;align-items:start}.toc{position:sticky;top:24px;font-size:13px;line-height:1.5}.toc ol{padding-left:18px}.toc li{margin:9px 0}.toc a{color:#a8bbd4;text-decoration:none}.toc a:hover{color:#fff;text-decoration:underline}article{min-width:0}section{margin-bottom:48px;border-top:1px solid #223451;padding-top:20px}h2{font-size:25px;line-height:1.35;margin:0 0 20px;letter-spacing:-.015em}h3{font-size:19px;margin-top:28px}p{margin:0 0 18px}strong{color:#fff}blockquote{margin:24px 0;padding:18px 22px;border-left:3px solid #8fc5ff;background:#111d31;font-size:19px;line-height:1.6}.formula{background:#111d31;border:1px solid #223451;border-radius:10px;padding:18px 22px;margin:22px 0;font-size:17px}.table-scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.5;margin:12px 0 24px}td,th{text-align:left;vertical-align:top;padding:12px;border-bottom:1px solid #223451}th{color:#b9c8dd;background:#111d31}code{color:#a9d5ff}footer{border-top:1px solid #223451;padding-top:24px;color:#91a4bf;font-size:14px}@media(max-width:800px){.layout{grid-template-columns:1fr;gap:24px}.toc{position:static;border:1px solid #223451;border-radius:12px;padding:16px}.toc ol{columns:2;column-gap:30px}.toc li{break-inside:avoid}h2{font-size:23px}}@media(max-width:480px){.toc ol{columns:1}.wrap{padding:20px 16px 44px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{body{background:white;color:#111}.nav,.toc{display:none}.layout{display:block}.wrap{max-width:none;padding:0}strong{color:#111}h1{font-size:30px}h2{font-size:22px}.subtitle,.meta,.context,footer{color:#444}section{break-before:auto}h2,h3{break-after:avoid}blockquote,.formula,th,.context{background:#f5f5f5;color:#111}a{color:#222}}</style></head>
+<body><main class="wrap"><nav class="nav" aria-label="Page navigation"><a href="./">← Dashboard</a><a href="#contents">Contents</a></nav>
+<header><div class="eyebrow">Research · Working paper</div><h1>Market Stress Dashboard</h1><p class="subtitle">A regime-monitoring framework for U.S. equity vulnerability and earnings resilience in an environment of high rates and AI investment</p><div class="meta"><span>Paper version: 0.2.1</span><span>As of: <time datetime="2026-09-28">September 28, 2026</time></span><span>Status: Operating hypotheses under validation</span></div></header>
+<div class="context"><p><strong>Purpose.</strong> Track market vulnerability and the strength of the earnings offset within a consistent framework, rather than predict market direction or generate mechanical trading signals.</p><p><strong>Document context.</strong> This is an English translation of the supplied v0.2.1 working paper. Its dated assessments, weekly-average figures, and design descriptions are preserved; they are not a live dashboard snapshot. The current application includes later data-quality safeguards. Seasonal-benchmark definition remains a separate research item.</p><p style="margin-bottom:0">The supplied paper names sources but does not include a complete bibliography. Its numerical claims have not been independently revalidated as part of this publication.</p></div>
+<div class="layout"><aside class="toc" id="contents"><nav aria-label="Table of contents"><strong>Contents</strong><ol><li><a href="#executive-summary">Executive Summary</a></li><li><a href="#problem-definition">1. Problem Definition</a></li><li><a href="#initial-model">2. The Initial Model and Rejected Hypotheses</a></li><li><a href="#rate-composition">3. First Finding: Yield Composition and Change Matter More Than the Level</a></li><li><a href="#yield-gap">4. Second Finding: The Equity Yield Gap Measures Vulnerability, Not Timing</a></li><li><a href="#revision-surprise">5. Third Finding: Revision Surprise Matters More Than Revision Alone</a></li><li><a href="#three-pillars">6. The Three-Pillar Structure of Dashboard v0.2.1</a></li><li><a href="#regime-matrix">7. Regime Matrix</a></li><li><a href="#red-regime">8. Defining a RED Regime</a></li><li><a href="#automation">9. Automation Architecture</a></li><li><a href="#validation">10. Validation Status</a></li><li><a href="#limitations">11. The Strongest Counterarguments and Limitations</a></li><li><a href="#next-validation">12. Next Validation Priorities</a></li><li><a href="#conclusion">Conclusion</a></li></ol></nav></aside><article aria-label="Whitepaper"><section id="executive-summary"><h2>Executive Summary</h2>
+<p>In 2026, U.S. equities remained resilient even as long-term Treasury yields approached or exceeded 5%. This prompted the argument that interest rates matter less in the age of AI investment.</p>
+<p>This project began by examining that claim. The initial question was simple:</p>
+<blockquote>Is a sustained rise in the U.S. 10-year Treasury yield really not a major problem for equities?</blockquote>
+<p>The review concluded that <strong>a 5% nominal 10-year yield, by itself, is not a sufficient risk signal.</strong> Equities have historically risen in high-rate environments. If higher yields reflect strong growth and earnings, earnings can offset a higher discount rate.</p>
+<p>The composition of the recent increase nevertheless warrants attention. Between August 28 and September 25, 2026, the weekly average nominal 10-year yield rose from 4.68% to 5.05%, approximately 37 basis points. Over the same period, the 10-year real yield rose from 2.36% to 2.72%, approximately 36 basis points, while 10-year breakeven inflation barely changed, from 2.32% to 2.34%. Nearly all of the recent increase in long-term yields therefore reflected <strong>a higher real discount rate</strong>.</p>
+<p>In the Federal Reserve’s Kim–Wright model, the term premium on a 10-year zero-coupon bond also rose from approximately 0.78% in mid-July to approximately 0.97% on September 16. This suggests that part of the increase reflected greater compensation for long-duration risk, alongside policy-rate expectations. The term premium is a model estimate, not an observable market price; the Fed identifies these data as research results rather than official statistics.</p>
+<p>At the same time, the earnings outlook remained strong. According to FactSet, the Q3 2026 S&amp;P 500 bottom-up EPS estimate increased <strong>1.2%</strong> from the end of June through the end of August. The average change over the corresponding period in the previous five years was <strong>−1.7%</strong>. A simple comparison therefore implies a positive revision surprise of approximately <strong>+2.9 percentage points</strong>.</p>
+<blockquote>High valuation vulnerability + high discount-rate shock + strong earnings confirmation.</blockquote>
+<p>The paper’s regime assessment is <strong>YELLOW–ORANGE</strong>. This is not a bear-market forecast. Its meaning is narrower:</p>
+<p><strong>The valuation cushion is thin and the real-rate shock is substantial, but earnings expectations are still providing an offset. If earnings expectations begin to deteriorate, the market’s risk structure could change nonlinearly.</strong></p>
+</section><section id="problem-definition"><h2>1. Problem Definition</h2>
+<p>The traditional equity framework holds that rising interest rates increase the discount rate on future cash flows and reduce equity valuations. In practice, however, the relationship between yields and stock prices is not constant.</p>
+<p>When interest rates rise because economic growth is strong, corporate revenue and earnings can rise as well. In an AI investment cycle, large hyperscaler capital expenditures and investment in data centers and power infrastructure may support both economic growth and corporate earnings.</p>
+<p>The simple relationship <strong>higher interest rates → lower stock prices</strong> is therefore insufficient. The question becomes:</p>
+<blockquote>Can earnings growth continue to offset the additional discount-rate burden created by rising yields?</blockquote>
+<p>Market Stress Dashboard is a tool for monitoring this question over time.</p>
+</section><section id="initial-model"><h2>2. The Initial Model and Rejected Hypotheses</h2>
+<p>Version 0.1 classified six indicators as Green, Yellow, or Red, then combined them into a weighted Stress Score. The inputs were the nominal 10-year yield, the real 10-year yield, breakeven inflation, EPS revisions, forward P/E, and AI credit spreads. Its initial assessment was <strong>45% Stress / Yellow</strong>.</p>
+<p>Subsequent review identified three problems. First, a 5% nominal yield had weak predictive value on its own: high rates can be a headwind without explaining a major market decline. Second, separately assigning large weights to real yields and P/E could double-count the same valuation mechanism. Third, the 45% figure came from judgmental weights applied to operating hypotheses, not a precise statistical model. It implied more accuracy than the validation supported.</p>
+<p>Version 0.2 therefore rejected or weakened the following rules:</p>
+<div class="table-scroll"><table><thead><tr><th>Rejected or weakened rule</th><th>Reason</th></tr></thead><tbody>
+<tr><td>Nominal 10Y &gt; 5.25% = Red</td><td>Weak independent predictive value of the absolute yield level.</td></tr>
+<tr><td>Real yield &gt; 2.75% = Red</td><td>Its meaning depends on the neutral-rate and growth regime.</td></tr>
+<tr><td>Separate large weights for forward P/E and real yields</td><td>Potential double counting of valuation risk.</td></tr>
+<tr><td>45% Stress Score</td><td>Implies more precision than the evidence supports.</td></tr>
+<tr><td>EPS revision &lt; 0 = Red</td><td>Analyst estimates tend to drift lower over time.</td></tr>
+</tbody></table></div>
+</section><section id="rate-composition"><h2>3. First Finding: Yield Composition and Change Matter More Than the Level</h2>
+<p>Interest rates can be approximately decomposed as follows:</p>
+<div class="formula">Nominal yield ≈ Real yield + Inflation expectations</div>
+<p>The recent data attribute almost all of the nominal-yield increase to higher real yields.</p>
+<div class="table-scroll"><table><thead><tr><th>Weekly average</th><th>2026-08-28</th><th>2026-09-25</th><th>Change</th></tr></thead><tbody>
+<tr><td>U.S. 10Y nominal yield</td><td>4.68%</td><td>5.05%</td><td>+37 bp</td></tr>
+<tr><td>U.S. 10Y real yield</td><td>2.36%</td><td>2.72%</td><td>+36 bp</td></tr>
+<tr><td>10Y breakeven inflation</td><td>2.32%</td><td>2.34%</td><td>+2 bp</td></tr>
+</tbody></table></div>
+<p>The central issue is therefore <strong>the rise in the real discount rate</strong>, rather than a surge in inflation expectations. A rising term premium is also contributing: the Kim–Wright 10-year estimate increased from approximately 0.78% in mid-July to approximately 0.97% in mid-September.</p>
+<p>From an equity perspective, these changes have different implications. A real-yield increase driven by stronger expected growth may be accompanied by higher earnings. A term-premium increase may instead reflect investors demanding a higher discount rate on long-duration assets without a corresponding improvement in earnings expectations.</p>
+<p>The dashboard therefore tracks <strong>one- and three-month changes and yield components</strong>, rather than relying on absolute yield levels.</p>
+</section><section id="yield-gap"><h2>4. Second Finding: The Equity Yield Gap Measures Vulnerability, Not Timing</h2>
+<p>The Fed uses a concept similar to the following in its Financial Stability Report when assessing equity valuations:</p>
+<div class="formula">Equity Yield Gap = S&amp;P 500 forward earnings yield − Expected real Treasury yield</div>
+<p>The published Fed series begins in October 1991, with a long-run median of <strong>4.59 percentage points</strong>. A narrow gap means that the additional earnings yield available to equity investors relative to real Treasuries is small.</p>
+<p>The review nevertheless reached an important conclusion: <strong>a narrow gap alone cannot predict the timing of a market decline.</strong> Around the dot-com bubble, extremely narrow gaps preceded weaker long-term returns. Yet in periods such as 2024–2025, equities could continue rising despite low gaps.</p>
+<p>Conversely, during the global financial crisis, the European debt crisis, and the COVID shock, wide gaps coincided with extreme fear but were often followed by improved long-term prospective returns.</p>
+<blockquote>A low gap does not mean that a market decline is imminent. It means that the valuation cushion available to absorb another shock is small.</blockquote>
+<p>Version 0.2 accordingly defines this pillar as <strong>Valuation Vulnerability</strong>.</p>
+</section><section id="revision-surprise"><h2>5. Third Finding: Revision Surprise Matters More Than Revision Alone</h2>
+<p>Analyst EPS estimates have a structural tendency to decline over time. Looking only at whether revisions are positive or negative can therefore distort their meaning.</p>
+<p>The Q3 2026 bottom-up EPS estimate rose 1.2% between June 30 and August 31. Over the corresponding first two months of the quarter in the previous five years, the average change was −1.7%.</p>
+<p>Conceptually, a more useful measure is:</p>
+<div class="formula">EPS Revision Surprise = Actual EPS revision − Normal seasonal revision</div>
+<p>The simple Q3 comparison is:</p>
+<div class="formula">+1.2% − (−1.7%) = +2.9 percentage points</div>
+<p>The important point is not the 1.2% figure in isolation, but <strong>the upward revision during a period when estimates would normally decline</strong>. The paper regards this as one of the most important buffers helping equities withstand high real yields.</p>
+</section><section id="three-pillars"><h2>6. The Three-Pillar Structure of Dashboard v0.2.1</h2>
+<p>The framework has been simplified into three dimensions.</p>
+<h3>Pillar A — Valuation Vulnerability</h3>
+<div class="formula">Forward earnings yield − 10Y real yield</div>
+<p>Forward P/E and real-yield levels are combined into a relative-value measure rather than scored separately. Lower values indicate greater vulnerability to rate and earnings shocks. This pillar is <strong>a vulnerability measure, not a sell signal</strong>.</p>
+<h3>Pillar B — Discount-Rate Shock</h3>
+<div class="table-scroll"><table><thead><tr><th>Variable</th><th>Role</th></tr></thead><tbody>
+<tr><td>1M change in 10Y real yield</td><td>Short-term discount-rate shock.</td></tr>
+<tr><td>3M change in 10Y real yield</td><td>Persistence of the shock.</td></tr>
+<tr><td>Change in 10Y term premium</td><td>Change in compensation for long-duration risk.</td></tr>
+<tr><td>10Y breakeven inflation</td><td>Helps distinguish inflation-driven shocks.</td></tr>
+<tr><td>Nominal 10Y yield</td><td>Headline context; not included in a score.</td></tr>
+</tbody></table></div>
+<p>The emphasis is on how quickly real yields and the term premium are rising, rather than whether the nominal yield is 5% or 6%.</p>
+<h3>Pillar C — Earnings Confirmation</h3>
+<p>The primary variable is <strong>EPS Revision Surprise</strong>, supported by <strong>Analyst Revision Breadth</strong>. This pillar asks whether earnings expectations are offsetting the discount-rate shock.</p>
+<p>FactSet’s official S&amp;P 500 bottom-up EPS data serve as an external validation anchor, but daily or weekly automation has practical limitations. Version 0.2.1 therefore added an internal <strong>Earnings Revision Proxy</strong>.</p>
+<p>Alpha Vantage’s Earnings Estimates API provides company-level annual and quarterly EPS and revenue estimates, analyst counts, and revision history. The process calculates 30-, 60-, and 90-day changes in future fiscal-year EPS estimates for leading SPY holdings, then weights them by SPY holding weights to approximate index-level direction.</p>
+<p>This is not the same measure as FactSet’s official S&amp;P 500 bottom-up EPS series. The dashboard distinguishes them explicitly:</p>
+<div class="formula">FactSet EPS Revision = External validation anchor<br>Earnings Revision Proxy = Automated operating signal</div>
+</section><section id="regime-matrix"><h2>7. Regime Matrix</h2>
+<p>The three pillars are not added into a single score. Market conditions are assessed through their interaction.</p>
+<div class="table-scroll"><table><thead><tr><th>Valuation vulnerability</th><th>Discount-rate shock</th><th>Earnings confirmation</th><th>Interpretation</th></tr></thead><tbody>
+<tr><td>Low</td><td>Low</td><td>Strong</td><td>GREEN</td></tr>
+<tr><td>High</td><td>Low</td><td>Strong</td><td>YELLOW</td></tr>
+<tr><td>High</td><td>High</td><td>Strong</td><td><strong>YELLOW–ORANGE</strong></td></tr>
+<tr><td>High</td><td>High</td><td>Weakening</td><td>ORANGE</td></tr>
+<tr><td>High</td><td>High</td><td>Negative</td><td><strong>RED</strong></td></tr>
+<tr><td>Low</td><td>High</td><td>Negative</td><td>ORANGE</td></tr>
+<tr><td>Low</td><td>Easing</td><td>Improving</td><td>GREEN</td></tr>
+</tbody></table></div>
+<p>The paper’s assessment is <strong>YELLOW–ORANGE</strong>: the valuation cushion is thin and the real-rate shock is strong, while earnings revisions are substantially stronger than the usual seasonal pattern.</p>
+<blockquote>An expensive market is facing a substantial real-rate shock, but earnings expectations are still offsetting that shock.</blockquote>
+</section><section id="red-regime"><h2>8. Defining a RED Regime</h2>
+<p>The key risk transition in this framework is not a 6% Treasury yield. It is the simultaneous occurrence of three conditions:</p>
+<div class="formula">High valuation vulnerability<br>+ Rising real yields / term premium<br>+ Materially negative EPS revision surprise</div>
+<p>For example, if the normal revision over a comparable period is −2% but estimates actually fall 6%, the revision surprise is −4 percentage points.</p>
+<p>If this occurs alongside a narrow Equity Yield Gap and persistently rising real yields, it suggests that earnings are beginning to lose their ability to offset discount-rate pressure. This combination is a <strong>candidate RED regime</strong>.</p>
+</section><section id="automation"><h2>9. Automation Architecture</h2>
+<p>The v0.2.1 web application was designed around GitHub Pages and GitHub Actions.</p>
+<h3>Daily / Market Data</h3>
+<p>Updates after U.S. business days cover:</p>
+<ul><li>U.S. nominal 10-year yield.</li><li>U.S. real 10-year yield.</li><li>10-year breakeven inflation.</li><li>One- and three-month real-yield changes.</li><li>Kim–Wright 10-year term premium, on a best-effort basis.</li></ul>
+<p>If term-premium collection fails, the value is marked <code>UNAVAILABLE</code> rather than replaced with zero.</p>
+<h3>Weekly / Earnings Data</h3>
+<p>Weekly updates cover:</p>
+<ul><li>Leading SPY holdings.</li><li>Company fiscal-year EPS estimates.</li><li>30-, 60-, and 90-day estimate changes.</li><li>The SPY-weighted revision proxy.</li><li>Analyst upward/downward revision breadth.</li><li>EPS Revision Surprise.</li></ul>
+<p>When API errors occur or coverage is insufficient, the v0.2.1 design uses a FactSet-based fallback rather than substituting zero.</p>
+</section><section id="validation"><h2>10. Validation Status</h2>
+<p>The paper classifies the principal hypotheses as follows:</p>
+<div class="table-scroll"><table><thead><tr><th>Hypothesis</th><th>Assessment in this paper</th></tr></thead><tbody>
+<tr><td>A 5% nominal 10-year yield alone is a Red signal</td><td><strong>Rejected</strong></td></tr>
+<tr><td>Real yields matter more than nominal yields</td><td>Retained</td></tr>
+<tr><td>The absolute real-yield level alone can determine risk</td><td>Weakened</td></tr>
+<tr><td>The pace of real-yield increases matters</td><td>Retained / further validation required</td></tr>
+<tr><td>A rising term premium is a separate risk factor</td><td>Retained</td></tr>
+<tr><td>A low Equity Yield Gap is an immediate sell signal</td><td>Rejected</td></tr>
+<tr><td>A low Equity Yield Gap increases vulnerability</td><td>Retained</td></tr>
+<tr><td>EPS revisions are a key offset to discount-rate shocks</td><td>Retained</td></tr>
+<tr><td>Seasonal surprise is more useful than the simple sign of revisions</td><td>Strengthened</td></tr>
+<tr><td>A single Stress Score is useful</td><td>Rejected</td></tr>
+<tr><td>Pillar interactions are more appropriate</td><td>Current baseline framework</td></tr>
+</tbody></table></div>
+</section><section id="limitations"><h2>11. The Strongest Counterarguments and Limitations</h2>
+<p>The dashboard should not be treated as a market-timing model.</p>
+<p>First, there are few economically independent regimes with extremely low Equity Yield Gaps. Dozens of monthly observations around the dot-com bubble and the recent cycle do not create dozens of independent events. Optimizing thresholds on these observations creates a substantial overfitting risk.</p>
+<p>Second, EPS revisions are not a purely leading indicator. In recessions, stock prices can move before analyst estimates. As in 2020, prices can bottom while earnings estimates continue falling.</p>
+<p>Third, the internal Earnings Revision Proxy uses a different formula from official S&amp;P 500 bottom-up EPS. Market-weighted percentage revisions concentrated in leading holdings approximate direction and breadth; they do not replicate index EPS.</p>
+<p>Fourth, the Kim–Wright term premium is a model estimate. The Fed identifies it as research data rather than an official statistic, and it is subject to revisions and methodological changes.</p>
+<p>The framework should therefore be used as <strong>a regime monitor for testing whether the rationale for maintaining equity exposure remains valid</strong>, rather than as a model for predicting a market crash.</p>
+</section><section id="next-validation"><h2>12. Next Validation Priorities</h2>
+<p>Three follow-up projects offer the greatest value.</p>
+<h3>1. External validation of the Earnings Revision Proxy</h3>
+<p>Store the automated proxy alongside official FactSet S&amp;P 500 revisions over the next two to three earnings seasons. The priorities are not exact agreement in levels, but direction, turning points, revision breadth, and the ability to detect rapid deterioration.</p>
+<h3>2. Historical regime simulation</h3>
+<p>As data accumulate, compare subsequent three-, six-, and twelve-month returns and maximum drawdowns across pillar combinations. Prioritize economic interpretation and out-of-sample reproducibility rather than optimizing cutoffs to fit historical results.</p>
+<h3>3. Forward P/E automation</h3>
+<p>Forward valuation remains partly manual. It can be fully automated once a reliable structured data source is available.</p>
+</section><section id="conclusion"><h2>Conclusion</h2>
+<p>The most important result of this work is to move beyond the binary question of whether interest rates matter for equities.</p>
+<p>High rates do not necessarily imply a bear market. If AI and productivity investment drive rapid growth in earnings expectations, high real yields and high stock prices can coexist for an extended period. That should not be interpreted as evidence that rates no longer matter.</p>
+<blockquote>Higher real discount rates are compressing valuation multiples, while strong earnings growth and positive revision surprise are still offsetting that pressure.</blockquote>
+<p>The important question is therefore not “Where is the 10-year yield?” It is a set of three questions:</p>
+<ul><li>How much additional shock can current valuations absorb?</li><li>How quickly are real-discount-rate and term-premium pressures increasing?</li><li>Can earnings expectations continue to offset those pressures?</li></ul>
+<p>Market Stress Dashboard v0.2.1 is a system for asking these questions repeatedly on a consistent basis.</p>
+<p>The paper’s conclusion is <strong>YELLOW–ORANGE</strong>. Earnings are still offsetting rates. With a thin valuation cushion and a substantial real-rate shock, however, <strong>weakening earnings confirmation is the most valuable change to monitor</strong>.</p>
+</section></article></div>
+<footer><p>Market Stress Dashboard · Working Paper v0.2.1 · September 28, 2026</p><a href="./">Return to the live dashboard →</a></footer></main></body></html>
