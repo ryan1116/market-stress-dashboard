@@ -1,0 +1,14 @@
+{
+  "etf": "SPY",
+  "max_holdings": 24,
+  "canonical_symbols": {
+    "GOOG": "GOOGL",
+    "BRK-B": "BRK.B"
+  },
+  "estimate_horizon": "fiscal year",
+  "minimum_days_to_fiscal_end": 90,
+  "seasonal_benchmark_60d": -1.7,
+  "seasonal_benchmark_note": "Provisional Q3 benchmark from FactSet 5-year average for comparable first-two-month revision window. Replace with quarter-specific benchmark as available.",
+  "history_min_observations_for_empirical_baseline": 52,
+  "enable_empirical_baseline": false
+}

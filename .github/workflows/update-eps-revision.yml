@@ -1,0 +1,30 @@
+name: Update EPS Revision Proxy
+on:
+  schedule:
+    - cron: "15 23 * * 0"   # Monday 08:15 KST
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  eps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build SPY earnings revision proxy
+        env:
+          ALPHAVANTAGE_API_KEY: ${{ secrets.ALPHAVANTAGE_API_KEY }}
+        run: python scripts/update_eps_revision.py
+      - name: Refresh dashboard with new earnings signal
+        run: |
+          pip install pandas lxml
+          python scripts/update_dashboard.py
+      - name: Commit
+        run: |
+          git config user.name "market-stress-bot"
+          git config user.email "market-stress-bot@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "chore: update EPS revision proxy"
+          git push

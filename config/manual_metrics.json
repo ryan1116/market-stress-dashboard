@@ -1,0 +1,18 @@
+{
+  "forward_pe": {
+    "value": 18.9,
+    "as_of": "2026-09-21",
+    "source": "Reuters/LSEG"
+  },
+  "eps_fallback": {
+    "revision_60d": 1.2,
+    "seasonal_benchmark_60d": -1.7,
+    "as_of": "2026-08-31",
+    "source": "FactSet Q3 first-two-month comparison"
+  },
+  "ai_credit_premium_bp": {
+    "value": 37.0,
+    "as_of": "2026-09-22",
+    "source": "Reuters"
+  }
+}

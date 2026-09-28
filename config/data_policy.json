@@ -1,0 +1,9 @@
+{
+  "proxy_max_age_days": 10,
+  "fallback_max_age_days": 14,
+  "forward_pe_max_age_days": 14,
+  "rates_max_age_days": 7,
+  "minimum_coverage_weight": 0.3,
+  "minimum_companies": 10,
+  "note": "Provisional operational data-quality guards; not statistically calibrated trading thresholds."
+}

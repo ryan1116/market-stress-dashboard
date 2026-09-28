@@ -1,0 +1,69 @@
+[
+  {
+    "version": "0.2.3",
+    "generated_at": "2026-09-28T14:41:30.156039+09:00",
+    "rate_sources": {
+      "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
+      "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
+      "T10YIE": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE"
+    },
+    "as_of": "2026-09-24",
+    "regime": "UNDETERMINED",
+    "regime_note": "HIGH valuation vulnerability + HIGH discount-rate shock + UNAVAILABLE earnings confirmation.",
+    "pillars": {
+      "valuation": {
+        "label": "Valuation Vulnerability",
+        "state": "HIGH",
+        "equity_yield_gap": 2.44,
+        "forward_earnings_yield": 5.29,
+        "forward_pe": 18.9,
+        "as_of": "2026-09-21",
+        "real10y": 2.85
+      },
+      "discount": {
+        "label": "Discount-Rate Shock",
+        "state": "HIGH",
+        "real10y": 2.85,
+        "real_1m_change_bp": 53.0,
+        "real_3m_change_bp": 67.0,
+        "term_premium": 0.9595,
+        "term_premium_1m_change_bp": 12.2,
+        "term_premium_as_of": "2026-09-18",
+        "term_premium_quality": "STALE",
+        "term_premium_source": "https://fred.stlouisfed.org/series/THREEFYTP10",
+        "breakeven10y": 2.33
+      },
+      "earnings": {
+        "label": "Earnings Confirmation",
+        "state": "UNAVAILABLE",
+        "source_mode": "FALLBACK",
+        "revision_60d": 1.2,
+        "seasonal_benchmark_60d": -1.7,
+        "revision_surprise": null,
+        "baseline_mode": "FACTSET_FALLBACK",
+        "coverage_weight": null,
+        "companies_used": null,
+        "quality": "STALE",
+        "analyst_revision_breadth": null,
+        "positive_company_weight": null,
+        "as_of": "2026-08-31"
+      }
+    },
+    "context": {
+      "nominal10y": 5.18,
+      "ai_credit_premium_bp": 37.0
+    },
+    "data_quality": {
+      "rates": "AUTO",
+      "term_premium": "STALE",
+      "forward_pe": "MANUAL",
+      "earnings": "STALE",
+      "earnings_source": "FALLBACK",
+      "ai_credit": "MANUAL",
+      "warnings": [
+        "Term premium stale: displayed for reference, excluded from shock signal",
+        "Earnings input: STALE"
+      ]
+    }
+  }
+]
