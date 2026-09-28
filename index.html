@@ -1,4 +1,4 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Market Stress Dashboard v0.2.3</title>
 <style>
 body{margin:0;background:#09111f;color:#eef4ff;font-family:system-ui,-apple-system,sans-serif}.wrap{max-width:1120px;margin:auto;padding:28px 18px}
@@ -9,33 +9,62 @@ body{margin:0;background:#09111f;color:#eef4ff;font-family:system-ui,-apple-syst
 .NEUTRAL,.MODERATE,.ELEVATED,.YELLOW{background:#4a3b12;color:#ffda68}.NEGATIVE,.RED{background:#4b1d27;color:#ff8a99}
 .big{font-size:27px;font-weight:800;margin:10px 0}.metric{display:flex;justify-content:space-between;border-top:1px solid #223451;padding:8px 0;font-size:14px}.metric span:first-child{color:#91a4bf}
 .note{line-height:1.55}.section{margin-top:16px}.quality{font-size:12px;color:#91a4bf;margin-top:12px}@media(max-width:800px){.grid{grid-template-columns:1fr}}
+h2{font-size:18px;margin:0 0 12px}.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left;font-size:14px}th,td{padding:12px 10px;border-bottom:1px solid #223451;vertical-align:top}th{color:#91a4bf;font-weight:600}td:nth-child(3){white-space:nowrap}td{line-height:1.5}a{color:#8fc5ff}a:focus-visible{outline:2px solid #8fc5ff;outline-offset:3px}
 </style></head><body><div class="wrap">
 <div class="top"><div><h1>Market Stress Dashboard <span class="muted">v0.2.3</span></h1><div class="muted">Valuation × Discount Rate × Earnings Revision Proxy</div></div><div id="regime" class="regime">Loading</div></div>
 <div class="card section"><b>Current interpretation</b><p id="note" class="note"></p><div id="asof" class="muted"></div></div>
 <div id="grid" class="grid"></div>
-<div class="card section"><b>Earnings proxy methodology</b><p class="note muted">SPY 상위 24 holdings에서 중복 share class를 합친 뒤, 향후 fiscal-year EPS estimate의 60일 변화를 SPY 비중으로 가중합니다. Alpha Vantage의 analyst revision breadth도 함께 표시합니다. 이는 FactSet S&P 500 bottom-up EPS revision과 동일한 지표가 아니라 자동화 가능한 proxy입니다.</p><div id="quality" class="quality"></div></div>
-<div class="card section"><b>판정 기준과 한계</b><p class="note muted">임계값과 데이터 유효기간은 운영 가설이며 검증된 매매 기준이 아닙니다. SPY 비중 30%·10개 기업 이상, proxy 10일·fallback 14일 이내를 기본 조건으로 적용합니다. 핵심 데이터가 유효하지 않으면 판정을 보류합니다. EPS 수정률은 100 × (현재−과거) / |과거|로 계산하며 과거 EPS가 0이면 제외합니다. 음수 EPS의 개선 방향을 보존하지만 기존 FactSet 분기 계절 기준과 비교 가능성이 입증된 것은 아닙니다.</p></div>
+<div class="card section"><b>Earnings proxy methodology</b><p class="note muted">The proxy uses the top 24 SPY holdings, combines duplicate share classes, and weights 60-day changes in future fiscal-year EPS estimates by SPY holding weights. Analyst revision breadth is also shown. This is a partial-index proxy, not the official FactSet S&amp;P 500 bottom-up EPS series.</p><div id="quality" class="quality"></div></div>
+<div class="card section"><b>Interpretation and limitations</b><p class="note muted">Thresholds and freshness limits are operating hypotheses, not validated trading rules. The proxy requires at least 30% SPY weight coverage and 10 companies. Proxy inputs expire after 10 days; fallback inputs expire after 14 days. The regime is undetermined when core inputs are invalid. EPS revision is 100 × (current − prior) / |prior|; zero prior EPS is excluded. This preserves the direction of changes in losses, but comparability with the provisional FactSet seasonal benchmark remains a separate research question.</p></div>
+<section class="card section" aria-labelledby="sources-heading"><h2 id="sources-heading">Data sources and dates</h2>
+<p class="note muted">Observation dates and collection dates are shown separately. Collection does not confirm when the provider last revised each estimate.</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">Data</th><th scope="col">Source</th><th scope="col">Date</th><th scope="col">Date type / notes</th></tr></thead><tbody id="sources"></tbody></table></div>
+<p id="generated" class="quality"></p>
+</section>
 </div><script>
 const f=(v,d=2)=>v==null?"N/A":Number(v).toFixed(d);
-fetch("data/latest.json?"+Date.now()).then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}).then(d=>{
+const loadJSON=path=>fetch(path+"?"+Date.now()).then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.json()});
+Promise.all([loadJSON("data/latest.json"),loadJSON("config/manual_metrics.json")]).then(([d,manual])=>{
  let rg=document.getElementById("regime");rg.textContent=d.regime;rg.className="regime "+d.regime;
  document.getElementById("note").textContent=d.regime_note;document.getElementById("asof").textContent="Market data as of "+d.as_of;
  let v=d.pillars.valuation,x=d.pillars.discount,e=d.pillars.earnings;
  document.getElementById("grid").innerHTML=`
  <div class="card"><div class="row"><span class="muted">${v.label}</span><span class="state ${v.state}">${v.state}</span></div><div class="big">${f(v.equity_yield_gap)}%p gap</div>
- <div class="metric"><span>Forward P/E</span><b>${f(v.forward_pe,1)}x</b></div><div class="metric"><span>P/E 기준일</span><b>${v.as_of||"미확인"}</b></div><div class="metric"><span>10Y real</span><b>${f(v.real10y)}%</b></div></div>
+ <div class="metric"><span>Forward P/E</span><b>${f(v.forward_pe,1)}x</b></div><div class="metric"><span>P/E as of</span><b>${v.as_of||"Unknown"}</b></div><div class="metric"><span>10Y real</span><b>${f(v.real10y)}%</b></div></div>
  <div class="card"><div class="row"><span class="muted">${x.label}</span><span class="state ${x.state}">${x.state}</span></div><div class="big">${f(x.real_1m_change_bp,0)} bp / 1M</div>
- <div class="metric"><span>Real yield 3M Δ</span><b>${f(x.real_3m_change_bp,0)} bp</b></div><div class="metric"><span>Term premium / 기준일</span><b>${f(x.term_premium,4)}% / ${x.term_premium_as_of||"미확인"}</b></div><div class="metric"><span>Term premium 상태</span><b>${x.term_premium_quality||"미확인"}</b></div><div class="metric"><span>Term premium 1M Δ</span><b>${f(x.term_premium_1m_change_bp,0)} bp</b></div></div>
- <div class="card"><div class="row"><span class="muted">${e.label}</span><span class="state ${e.state}">${e.state}</span></div><div class="big">${e.revision_surprise==null?"판정 보류":f(e.revision_surprise)+"%p surprise"}</div>
- <div class="metric"><span>이익 기준일 / 상태</span><b>${e.as_of||"미확인"} / ${e.quality||"미확인"}</b></div>
- <div class="metric"><span>60D EPS revision</span><b>${f(e.revision_60d)}%</b></div><div class="metric"><span>Seasonal baseline (잠정)</span><b>${f(e.seasonal_benchmark_60d)}%</b></div>
+ <div class="metric"><span>Real yield 3M Δ</span><b>${f(x.real_3m_change_bp,0)} bp</b></div><div class="metric"><span>Term premium / as of</span><b>${f(x.term_premium,4)}% / ${x.term_premium_as_of||"Unknown"}</b></div><div class="metric"><span>Term premium status</span><b>${x.term_premium_quality||"Unknown"}</b></div><div class="metric"><span>Term premium 1M Δ</span><b>${f(x.term_premium_1m_change_bp,0)} bp</b></div></div>
+ <div class="card"><div class="row"><span class="muted">${e.label}</span><span class="state ${e.state}">${e.state}</span></div><div class="big">${e.revision_surprise==null?"Undetermined":f(e.revision_surprise)+"%p surprise"}</div>
+ <div class="metric"><span>Earnings date / status</span><b>${e.as_of||"Unknown"} / ${e.quality||"Unknown"}</b></div>
+ <div class="metric"><span>60D EPS revision</span><b>${f(e.revision_60d)}%</b></div><div class="metric"><span>Seasonal baseline (provisional)</span><b>${f(e.seasonal_benchmark_60d)}%</b></div>
  <div class="metric"><span>SPY weight coverage</span><b>${e.coverage_weight==null?"Fallback":Math.round(e.coverage_weight*100)+"%"}</b></div>
  <div class="metric"><span>Analyst breadth</span><b>${e.analyst_revision_breadth==null?"N/A":f(e.analyst_revision_breadth,2)}</b></div></div>`;
+ const automatic=e.source_mode==="AUTO_PROXY";
+ const rows=[
+  ["10Y nominal Treasury yield", "FRED · DGS10", "https://fred.stlouisfed.org/series/DGS10", d.as_of, "Observation date used in this snapshot"],
+  ["10Y real yield · 1M / 3M changes", "FRED · DFII10", "https://fred.stlouisfed.org/series/DFII10", d.as_of, "Observation date; changes end on this date"],
+  ["10Y breakeven inflation", "FRED · T10YIE", "https://fred.stlouisfed.org/series/T10YIE", d.as_of, "Observation date used in this snapshot"],
+  ["10Y term premium · 1M change", "FRED · THREEFYTP10 (Kim–Wright)", "https://fred.stlouisfed.org/series/THREEFYTP10", x.term_premium_as_of, "Observation date · "+(x.term_premium_quality||"Unknown")],
+  ["Forward P/E · earnings yield", manual.forward_pe.source, null, v.as_of||manual.forward_pe.as_of, "Manual input date; original report URL not recorded. Earnings yield = 100 / P/E."],
+  ["EPS revisions · analyst breadth · SPY coverage", automatic?"Alpha Vantage · ETF_PROFILE / EARNINGS_ESTIMATES":manual.eps_fallback.source, automatic?"https://www.alphavantage.co/documentation/":null, e.as_of, automatic?"Collection date; individual provider update times are unavailable":"Manual fallback input date; original report URL not recorded"],
+  ["Seasonal baseline (provisional)", e.baseline_mode==="EMPIRICAL_SAME_MONTH_MEDIAN"?"Stored proxy history": "FactSet benchmark · manual configuration", null, null, "Benchmark reference date not recorded; seasonal definition is under research"],
+  ["AI credit premium (context)", manual.ai_credit_premium_bp.source, null, manual.ai_credit_premium_bp.as_of, "Manual input date; original report URL not recorded"]
+ ];
+ const tbody=document.getElementById("sources");
+ rows.forEach(([metric,source,url,date,note])=>{
+  const row=document.createElement("tr");
+  [metric,source,date||"Not recorded",note].forEach((value,index)=>{
+   const cell=document.createElement("td");
+   if(index===1 && url){const link=document.createElement("a");link.href=url;link.textContent=value;cell.appendChild(link);}
+   else cell.textContent=value;
+   row.appendChild(cell);
+  });tbody.appendChild(row);
+ });
+ document.getElementById("generated").textContent="Snapshot generated: "+(d.generated_at||"Not recorded")+". Equity yield gap combines the P/E input date and real-yield observation date shown above. Revision surprise uses the EPS input and provisional baseline; it has no independent source date.";
  document.getElementById("quality").textContent="Data quality: "+JSON.stringify(d.data_quality)+" · Earnings baseline: "+(e.baseline_mode||"fallback");
 }).catch(error=>{
- document.getElementById("regime").textContent="데이터 오류";
+ document.getElementById("regime").textContent="Data unavailable";
  document.getElementById("regime").className="regime UNAVAILABLE";
  document.getElementById("grid").textContent="";
- document.getElementById("note").textContent="데이터를 불러오지 못해 판정을 보류합니다. "+error.message;
+ document.getElementById("note").textContent="The regime is unavailable because dashboard data could not be loaded. "+error.message;
 });
 </script></body></html>
