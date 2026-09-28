@@ -1,17 +1,8 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Market Stress Dashboard v0.2.3</title>
-<style>
-body{margin:0;background:#09111f;color:#eef4ff;font-family:system-ui,-apple-system,sans-serif}.wrap{max-width:1120px;margin:auto;padding:28px 18px}
-.top,.row{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap}.muted{color:#91a4bf}h1{margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
-.card{background:#111d31;border:1px solid #223451;border-radius:16px;padding:18px}.state,.regime{font-weight:800;border-radius:999px;padding:7px 11px}
-.HIGH,.WEAKENING,.YELLOW-ORANGE,.ORANGE{background:#542e13;color:#ffb06b}.STRONG,.LOW,.GREEN,.EASING{background:#123d2b;color:#7ce9ae}
-.UNDETERMINED,.UNAVAILABLE{background:#354052;color:#e2e8f0}
-.NEUTRAL,.MODERATE,.ELEVATED,.YELLOW{background:#4a3b12;color:#ffda68}.NEGATIVE,.RED{background:#4b1d27;color:#ff8a99}
-.big{font-size:27px;font-weight:800;margin:10px 0}.metric{display:flex;justify-content:space-between;border-top:1px solid #223451;padding:8px 0;font-size:14px}.metric span:first-child{color:#91a4bf}
-.note{line-height:1.55}#note .interpretation-line{display:block;margin:0 0 8px}#note .interpretation-line:last-child{margin-bottom:0}.section{margin-top:16px}.quality{font-size:12px;color:#91a4bf;margin-top:12px}@media(max-width:800px){.grid{grid-template-columns:1fr}}
-h2{font-size:18px;margin:0 0 12px}.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left;font-size:14px}th,td{padding:12px 10px;border-bottom:1px solid #223451;vertical-align:top}th{color:#91a4bf;font-weight:600}td:nth-child(3){white-space:nowrap}td{line-height:1.5}a{color:#8fc5ff}a:focus-visible{outline:2px solid #8fc5ff;outline-offset:3px}
-</style></head><body><div class="wrap">
-<nav aria-label="Resources" style="margin-bottom:18px"><a href="whitepaper.html">Read the whitepaper →</a></nav>
+<link rel="stylesheet" href="terminal.css?v=1"></head><body><div class="wrap">
+<div class="terminal-bar"><span>MSD / U.S. EQUITIES</span><span>MARKET REGIME MONITOR</span></div>
+<nav class="terminal-nav" aria-label="Resources"><a href="./" aria-current="page"><span class="key">01</span>OVERVIEW</a><a href="whitepaper.html"><span class="key">02</span>WHITEPAPER</a><a href="#sources-heading"><span class="key">03</span>DATA SOURCES</a></nav>
 <div class="top"><div><h1>Market Stress Dashboard <span class="muted">v0.2.3</span></h1><div class="muted">Valuation × Discount Rate × Earnings Revision Proxy</div></div><div id="regime" class="regime">Loading</div></div>
 <div class="card section"><b>Current interpretation</b><p id="note" class="note"></p><div id="asof" class="muted"></div></div>
 <div id="grid" class="grid"></div>
