@@ -8,7 +8,7 @@ function stagePosition(regime){return stages.indexOf(regime);}
 function translateText(text){
  const clean=text.trim();
  if(translations[clean])return text.replace(clean,translations[clean]);
- return text.replace(/Observation date · /g,'관측일 · ').replace(/%p gap/g,'%p 격차').replace(/%p surprise/g,'%p 서프라이즈').replace(/bp \/ 1M/g,'bp / 1개월').replace(/\b(STALE|CURRENT|AUTO|MANUAL|UNAVAILABLE|Unknown)\b/g,value=>translations[value]||value);
+ return text.replace(/Outdated · reference only/g,'유효기간 초과 · 참고용').replace(/Up to date/g,'유효한 자료').replace(/Automatically updated/g,'자동 갱신').replace(/Not available/g,'확인 불가').replace(/Observation date · /g,'관측일 · ').replace(/%p gap/g,'%p 격차').replace(/%p surprise/g,'%p 서프라이즈').replace(/bp \/ 1M/g,'bp / 1개월').replace(/\b(STALE|CURRENT|AUTO|MANUAL|UNAVAILABLE|Unknown)\b/g,value=>translations[value]||value);
 }
 function koreanInterpretation(d){
  const v=d.pillars.valuation,x=d.pillars.discount,e=d.pillars.earnings;
@@ -70,13 +70,9 @@ window.applyLanguage=function(){
   document.getElementById('note').replaceChildren(...lines.map(text=>{const span=document.createElement('span');span.className='interpretation-line';span.textContent=text;return span;}));
   document.getElementById('asof').textContent=(ko?'시장 데이터 기준일: ':'Market data as of ')+d.as_of;
   document.getElementById('generated').textContent=ko?`스냅샷 생성: ${d.generated_at||'미기록'}. 주식 이익수익률 격차는 위의 PER 입력일과 실질금리 관측일을 함께 사용합니다. 이익 수정 서프라이즈는 EPS 입력과 잠정 계절 기준을 사용하며 별도의 원자료 기준일은 없습니다.`:`Snapshot generated: ${d.generated_at||'Not recorded'}. Equity yield gap combines the P/E input date and real-yield observation date shown above. Revision surprise uses the EPS input and provisional baseline; it has no independent source date.`;
-  const q=d.data_quality;const status=value=>ko?(translations[value]||value):value;
-  const labels=ko?['금리','기간 프리미엄','선행 PER','이익','계절 기준']:['Rates','Term premium','Forward P/E','Earnings','Seasonal baseline'];
-  const baseline=d.pillars.earnings.baseline_mode;
-  const baselineLabels=ko?{PROVISIONAL_CONFIG:'잠정 기준',FACTSET_FALLBACK:'FactSet 대체 입력',EMPIRICAL_SAME_MONTH_MEDIAN:'동일 월 중앙값'}:{PROVISIONAL_CONFIG:'Provisional',FACTSET_FALLBACK:'FactSet fallback',EMPIRICAL_SAME_MONTH_MEDIAN:'Same-month median'};
-  document.getElementById('quality').textContent=[q.rates,q.term_premium,q.forward_pe,q.earnings,baselineLabels[baseline]||baseline||'Unknown'].map((value,index)=>labels[index]+': '+status(value)).join(' · ');
+  document.getElementById('quality').textContent=qualitySummary(d,language);
  }else if(window.dashboardError){document.getElementById('note').textContent=ko?'데이터를 불러오지 못해 시장 국면 판정을 보류합니다.':'The regime is unavailable because dashboard data could not be loaded.';}
 };
 document.querySelectorAll('[data-language]').forEach(button=>button.addEventListener('click',()=>{language=button.dataset.language;window.applyLanguage();}));
 window.applyLanguage();
-fetch('translations.json?v=2').then(response=>{if(!response.ok)throw Error('Translation request failed');return response.json();}).then(data=>{translations=data;window.applyLanguage();}).catch(()=>{language='en';document.querySelector('[data-language="ko"]').disabled=true;window.applyLanguage();});
+fetch('translations.json?v=3').then(response=>{if(!response.ok)throw Error('Translation request failed');return response.json();}).then(data=>{translations=data;window.applyLanguage();}).catch(()=>{language='en';document.querySelector('[data-language="ko"]').disabled=true;window.applyLanguage();});

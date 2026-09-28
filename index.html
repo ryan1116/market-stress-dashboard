@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Market Stress Dashboard v0.2.3</title>
-<link rel="stylesheet" href="terminal.css?v=2"><script src="ui.js?v=2" defer></script></head><body><div class="wrap">
+<link rel="stylesheet" href="terminal.css?v=2"><script src="ui.js?v=3" defer></script></head><body><div class="wrap">
 <div class="terminal-bar"><span>MSD / U.S. EQUITIES</span><div class="language-toggle" role="group" aria-label="Language"><button type="button" data-language="en" aria-pressed="true">English</button><button type="button" data-language="ko" aria-pressed="false">Korean (한글)</button></div></div>
 <nav class="terminal-nav" aria-label="Resources"><a href="./" aria-current="page"><span class="key">01</span>OVERVIEW</a><a href="whitepaper.html"><span class="key">02</span>WHITEPAPER</a><a href="#sources-heading"><span class="key">03</span>DATA SOURCES</a></nav>
 <div class="top"><div><h1>Market Stress Dashboard</h1><div class="muted">Valuation × Discount Rate × Earnings Revision Proxy</div></div><section class="regime-overview" aria-label="Market regime scale"><div class="regime-summary"><span id="regime-caption">CURRENT REGIME</span><div id="regime" class="regime">Loading</div></div><ol id="regime-scale" class="regime-scale"></ol><div class="regime-axis"><span id="scale-start">Lower concern</span><span id="scale-end">Higher concern</span></div><div id="scale-note" class="scale-note">Qualitative categories · not a probability scale</div></section></div>
@@ -16,6 +16,20 @@
 <footer class="version-note">Dashboard version · v0.2.3</footer>
 </div><script>
 const f=(v,d=2)=>v==null?"N/A":Number(v).toFixed(d);
+function qualityLabel(value){
+ return {AUTO:"Automatically updated",MANUAL:"Manually entered",CURRENT:"Up to date",STALE:"Outdated · reference only",UNAVAILABLE:"Not available",FUTURE:"Date needs review",INVALID_DATE:"Date needs review",INVALID_VALUE:"Value needs review",AUTO_PROXY:"Automated estimate proxy",FALLBACK:"Manual fallback"}[value]||"Not confirmed";
+}
+function qualitySummary(d,lang='en'){
+ const ko=lang==='ko',q=d.data_quality,e=d.pillars.earnings;
+ const sentences=[];
+ sentences.push(q.rates==='AUTO'?(ko?'금리는 자동 갱신됩니다.':'Rates are updated automatically.'):(ko?'금리 데이터의 최신성을 확인해야 합니다.':'Rate data need a freshness check.'));
+ sentences.push(q.forward_pe==='MANUAL'?(ko?'선행 PER은 수동 입력값입니다.':'Forward P/E is entered manually.'):(ko?'선행 PER 입력값을 다시 확인해야 합니다.':'The forward P/E input needs review.'));
+ sentences.push(e.quality==='CURRENT'?(e.source_mode==='AUTO_PROXY'?(ko?'이익 추정치는 자동 수집한 유효한 자료입니다.':'Earnings estimates are current and collected automatically.'):(ko?'이익은 유효한 수동 대체 자료를 사용합니다.':'Earnings use a current manual fallback.')):(ko?'이익 자료가 유효하지 않아 이익 판정에 사용하지 않습니다.':'Earnings data do not meet the requirements for an active signal.'));
+ if(q.term_premium==='STALE')sentences.push(ko?'기간 프리미엄은 오래된 값이므로 참고용으로만 표시합니다.':'Term premium is outdated and shown for reference only.');
+ else if(q.term_premium==='UNAVAILABLE')sentences.push(ko?'기간 프리미엄은 현재 확인할 수 없습니다.':'Term premium is currently unavailable.');
+ if(e.baseline_mode!=='EMPIRICAL_SAME_MONTH_MEDIAN')sentences.push(ko?'계절 기준은 아직 잠정값입니다.':'The seasonal benchmark remains provisional.');
+ return sentences.join(' ');
+}
 function interpretationLines(d){
  const v=d.pillars.valuation,x=d.pillars.discount,e=d.pillars.earnings;
  const signed=(value,digits=0)=>value==null?"N/A":(value>0?"+":"")+f(value,digits);
@@ -55,9 +69,9 @@ Promise.all([loadJSON("data/latest.json"),loadJSON("config/manual_metrics.json")
  <div class="card"><div class="row"><span class="muted">${v.label}</span><span class="state ${v.state}">${v.state}</span></div><div class="big">${f(v.equity_yield_gap)}%p gap</div>
  <div class="metric"><span>Forward P/E</span><b>${f(v.forward_pe,1)}x</b></div><div class="metric"><span>P/E as of</span><b>${v.as_of||"Unknown"}</b></div><div class="metric"><span>10Y real</span><b>${f(v.real10y)}%</b></div></div>
  <div class="card"><div class="row"><span class="muted">${x.label}</span><span class="state ${x.state}">${x.state}</span></div><div class="big">${f(x.real_1m_change_bp,0)} bp / 1M</div>
- <div class="metric"><span>Real yield 3M Δ</span><b>${f(x.real_3m_change_bp,0)} bp</b></div><div class="metric"><span>Term premium / as of</span><b>${f(x.term_premium,4)}% / ${x.term_premium_as_of||"Unknown"}</b></div><div class="metric"><span>Term premium status</span><b>${x.term_premium_quality||"Unknown"}</b></div><div class="metric"><span>Term premium 1M Δ</span><b>${f(x.term_premium_1m_change_bp,0)} bp</b></div></div>
+ <div class="metric"><span>Real yield 3M Δ</span><b>${f(x.real_3m_change_bp,0)} bp</b></div><div class="metric"><span>Term premium / as of</span><b>${f(x.term_premium,4)}% / ${x.term_premium_as_of||"Unknown"}</b></div><div class="metric"><span>Term premium status</span><b>${qualityLabel(x.term_premium_quality)}</b></div><div class="metric"><span>Term premium 1M Δ</span><b>${f(x.term_premium_1m_change_bp,0)} bp</b></div></div>
  <div class="card"><div class="row"><span class="muted">${e.label}</span><span class="state ${e.state}">${e.state}</span></div><div class="big">${e.revision_surprise==null?"Undetermined":f(e.revision_surprise)+"%p surprise"}</div>
- <div class="metric"><span>Earnings date / status</span><b>${e.as_of||"Unknown"} / ${e.quality||"Unknown"}</b></div>
+ <div class="metric"><span>Earnings date / status</span><b>${e.as_of||"Unknown"} / ${qualityLabel(e.quality)}</b></div>
  <div class="metric"><span>60D EPS revision</span><b>${f(e.revision_60d)}%</b></div><div class="metric"><span>Seasonal baseline (provisional)</span><b>${f(e.seasonal_benchmark_60d)}%</b></div>
  <div class="metric"><span>SPY weight coverage</span><b>${e.coverage_weight==null?"Fallback":Math.round(e.coverage_weight*100)+"%"}</b></div>
  <div class="metric"><span>Analyst breadth</span><b>${e.analyst_revision_breadth==null?"N/A":f(e.analyst_revision_breadth,2)}</b></div></div>`;
@@ -66,7 +80,7 @@ Promise.all([loadJSON("data/latest.json"),loadJSON("config/manual_metrics.json")
   ["10Y nominal Treasury yield", "FRED · DGS10", "https://fred.stlouisfed.org/series/DGS10", d.as_of, "Observation date used in this snapshot"],
   ["10Y real yield · 1M / 3M changes", "FRED · DFII10", "https://fred.stlouisfed.org/series/DFII10", d.as_of, "Observation date; changes end on this date"],
   ["10Y breakeven inflation", "FRED · T10YIE", "https://fred.stlouisfed.org/series/T10YIE", d.as_of, "Observation date used in this snapshot"],
-  ["10Y term premium · 1M change", "FRED · THREEFYTP10 (Kim–Wright)", "https://fred.stlouisfed.org/series/THREEFYTP10", x.term_premium_as_of, "Observation date · "+(x.term_premium_quality||"Unknown")],
+  ["10Y term premium · 1M change", "FRED · THREEFYTP10 (Kim–Wright)", "https://fred.stlouisfed.org/series/THREEFYTP10", x.term_premium_as_of, "Observation date · "+qualityLabel(x.term_premium_quality)],
   ["Forward P/E · earnings yield", manual.forward_pe.source, null, v.as_of||manual.forward_pe.as_of, "Manual input date; original report URL not recorded. Earnings yield = 100 / P/E."],
   ["EPS revisions · analyst breadth · SPY coverage", automatic?"Alpha Vantage · ETF_PROFILE / EARNINGS_ESTIMATES":manual.eps_fallback.source, automatic?"https://www.alphavantage.co/documentation/":null, e.as_of, automatic?"Collection date; individual provider update times are unavailable":"Manual fallback input date; original report URL not recorded"],
   ["Seasonal baseline (provisional)", e.baseline_mode==="EMPIRICAL_SAME_MONTH_MEDIAN"?"Stored proxy history": "FactSet benchmark · manual configuration", null, null, "Benchmark reference date not recorded; seasonal definition is under research"],
@@ -83,7 +97,7 @@ Promise.all([loadJSON("data/latest.json"),loadJSON("config/manual_metrics.json")
   });tbody.appendChild(row);
  });
  document.getElementById("generated").textContent="Snapshot generated: "+(d.generated_at||"Not recorded")+". Equity yield gap combines the P/E input date and real-yield observation date shown above. Revision surprise uses the EPS input and provisional baseline; it has no independent source date.";
- document.getElementById("quality").textContent="Data quality: "+JSON.stringify(d.data_quality)+" · Earnings baseline: "+(e.baseline_mode||"fallback");
+ document.getElementById("quality").textContent=qualitySummary(d);
  window.dashboardData=d;
  if(window.applyLanguage) window.applyLanguage();
 }).catch(error=>{

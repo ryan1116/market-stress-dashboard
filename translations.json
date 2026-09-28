@@ -67,5 +67,13 @@
   "STALE": "유효기간 초과",
   "CURRENT": "유효",
   "AUTO": "자동",
-  "MANUAL": "수동"
+  "MANUAL": "수동",
+  "Automatically updated": "자동 갱신",
+  "Manually entered": "수동 입력",
+  "Up to date": "유효한 자료",
+  "Outdated · reference only": "유효기간 초과 · 참고용",
+  "Not available": "확인 불가",
+  "Not confirmed": "미확인",
+  "Date needs review": "날짜 확인 필요",
+  "Value needs review": "값 확인 필요"
 }
