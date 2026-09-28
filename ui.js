@@ -77,4 +77,4 @@ window.applyLanguage=function(){
 };
 document.querySelectorAll('[data-language]').forEach(button=>button.addEventListener('click',()=>{language=button.dataset.language;const url=new URL(location.href);url.searchParams.set('lang',language);history.replaceState(null,'',url);window.applyLanguage();}));
 window.applyLanguage();
-fetch('translations.json?v=5').then(response=>{if(!response.ok)throw Error('Translation request failed');return response.json();}).then(data=>{translations=data;window.applyLanguage();}).catch(()=>{language='en';document.querySelector('[data-language="ko"]').disabled=true;window.applyLanguage();});
+fetch('translations.json?v=6').then(response=>{if(!response.ok)throw Error('Translation request failed');return response.json();}).then(data=>{translations=data;window.applyLanguage();}).catch(()=>{language='en';document.querySelector('[data-language="ko"]').disabled=true;window.applyLanguage();});

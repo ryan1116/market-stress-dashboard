@@ -1,4 +1,23 @@
 const glossary={
+  "equityyield": {
+  "aliases": [
+    "Equity yield (forward)"
+  ],
+  "title": {
+    "en": "Equity yield (forward)",
+    "ko": "주식 이익수익률 (선행)"
+  },
+  "lines": {
+    "en": [
+      "Expected earnings relative to price, calculated as 100 / forward P/E (%); this is not a dividend yield or a forecast of total return.",
+      "Subtracting the 10-year real Treasury yield gives the equity yield gap. The source and reference date are inherited from the forward P/E input."
+    ],
+    "ko": [
+      "주가 대비 예상 이익으로, 100 / 선행 PER(%)로 계산합니다. 배당수익률이나 총수익률 전망을 뜻하지 않습니다.",
+      "여기서 10년 실질국채금리를 빼면 주식 이익수익률 격차가 됩니다. 출처와 기준일은 선행 PER 입력값을 따릅니다."
+    ]
+  }
+},
   "regime": {
     "aliases": [
       "CURRENT REGIME",
@@ -98,19 +117,20 @@ const glossary={
   },
   "pedate": {
     "aliases": [
-      "P/E as of"
+      "P/E as of",
+      "P/E / equity yield as of"
     ],
     "title": {
-      "en": "P/E reference date",
-      "ko": "PER 기준일"
+      "en": "P/E and equity-yield reference date",
+      "ko": "PER · 이익수익률 기준일"
     },
     "lines": {
       "en": [
-        "The date attached to the manually entered forward P/E, not the page refresh time.",
+        "The reference date of the manually entered forward P/E and the equity yield derived from it.",
         "An input older than the configured validity limit is excluded from the active regime assessment."
       ],
       "ko": [
-        "수동 입력된 선행 PER의 기준일이며, 화면을 새로고침한 시각이 아닙니다.",
+        "수동 입력된 선행 PER과 그 역수로 계산한 주식 이익수익률의 기준일입니다.",
         "설정된 유효기간을 넘긴 입력값은 현재 시장 국면 판정에서 제외합니다."
       ]
     }
