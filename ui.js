@@ -1,5 +1,5 @@
 /* Display-only language and regime navigation. Financial classifications stay in latest.json. */
-let language='en';
+let language=new URLSearchParams(location.search).get('lang')==='ko'?'ko':'en';
 let translations={};
 const originalText=new WeakMap();
 const stages=['GREEN','YELLOW','YELLOW-ORANGE','ORANGE','RED'];
@@ -54,6 +54,7 @@ function renderRegimeScale(){
 }
 window.applyLanguage=function(){
  const ko=language==='ko';document.documentElement.lang=language;
+ document.querySelectorAll('a[href^="whitepaper.html"]').forEach(link=>link.href='whitepaper.html?lang='+language);
  const root=document.querySelector('.wrap');
  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
  const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
@@ -74,6 +75,6 @@ window.applyLanguage=function(){
  }else if(window.dashboardError){document.getElementById('note').textContent=ko?'데이터를 불러오지 못해 시장 국면 판정을 보류합니다.':'The regime is unavailable because dashboard data could not be loaded.';}
  if(window.installTermHelp) window.installTermHelp();
 };
-document.querySelectorAll('[data-language]').forEach(button=>button.addEventListener('click',()=>{language=button.dataset.language;window.applyLanguage();}));
+document.querySelectorAll('[data-language]').forEach(button=>button.addEventListener('click',()=>{language=button.dataset.language;const url=new URL(location.href);url.searchParams.set('lang',language);history.replaceState(null,'',url);window.applyLanguage();}));
 window.applyLanguage();
-fetch('translations.json?v=3').then(response=>{if(!response.ok)throw Error('Translation request failed');return response.json();}).then(data=>{translations=data;window.applyLanguage();}).catch(()=>{language='en';document.querySelector('[data-language="ko"]').disabled=true;window.applyLanguage();});
+fetch('translations.json?v=5').then(response=>{if(!response.ok)throw Error('Translation request failed');return response.json();}).then(data=>{translations=data;window.applyLanguage();}).catch(()=>{language='en';document.querySelector('[data-language="ko"]').disabled=true;window.applyLanguage();});
