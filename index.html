@@ -1,9 +1,9 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Market Stress Dashboard v0.2.3</title>
-<link rel="stylesheet" href="terminal.css?v=1"></head><body><div class="wrap">
-<div class="terminal-bar"><span>MSD / U.S. EQUITIES</span><span>MARKET REGIME MONITOR</span></div>
+<link rel="stylesheet" href="terminal.css?v=2"><script src="ui.js?v=2" defer></script></head><body><div class="wrap">
+<div class="terminal-bar"><span>MSD / U.S. EQUITIES</span><div class="language-toggle" role="group" aria-label="Language"><button type="button" data-language="en" aria-pressed="true">English</button><button type="button" data-language="ko" aria-pressed="false">Korean (한글)</button></div></div>
 <nav class="terminal-nav" aria-label="Resources"><a href="./" aria-current="page"><span class="key">01</span>OVERVIEW</a><a href="whitepaper.html"><span class="key">02</span>WHITEPAPER</a><a href="#sources-heading"><span class="key">03</span>DATA SOURCES</a></nav>
-<div class="top"><div><h1>Market Stress Dashboard</h1><div class="muted">Valuation × Discount Rate × Earnings Revision Proxy</div></div><div id="regime" class="regime">Loading</div></div>
+<div class="top"><div><h1>Market Stress Dashboard</h1><div class="muted">Valuation × Discount Rate × Earnings Revision Proxy</div></div><section class="regime-overview" aria-label="Market regime scale"><div class="regime-summary"><span id="regime-caption">CURRENT REGIME</span><div id="regime" class="regime">Loading</div></div><ol id="regime-scale" class="regime-scale"></ol><div class="regime-axis"><span id="scale-start">Lower concern</span><span id="scale-end">Higher concern</span></div><div id="scale-note" class="scale-note">Qualitative categories · not a probability scale</div></section></div>
 <div class="card section"><b>Current interpretation</b><p id="note" class="note"></p><div id="asof" class="muted"></div></div>
 <div id="grid" class="grid"></div>
 <div class="card section"><b>Earnings proxy methodology</b><p class="note muted">The proxy uses the top 24 SPY holdings, combines duplicate share classes, and weights 60-day changes in future fiscal-year EPS estimates by SPY holding weights. Analyst revision breadth is also shown. This is a partial-index proxy, not the official FactSet S&amp;P 500 bottom-up EPS series.</p><div id="quality" class="quality"></div></div>
@@ -84,10 +84,13 @@ Promise.all([loadJSON("data/latest.json"),loadJSON("config/manual_metrics.json")
  });
  document.getElementById("generated").textContent="Snapshot generated: "+(d.generated_at||"Not recorded")+". Equity yield gap combines the P/E input date and real-yield observation date shown above. Revision surprise uses the EPS input and provisional baseline; it has no independent source date.";
  document.getElementById("quality").textContent="Data quality: "+JSON.stringify(d.data_quality)+" · Earnings baseline: "+(e.baseline_mode||"fallback");
+ window.dashboardData=d;
+ if(window.applyLanguage) window.applyLanguage();
 }).catch(error=>{
  document.getElementById("regime").textContent="Data unavailable";
  document.getElementById("regime").className="regime UNAVAILABLE";
  document.getElementById("grid").textContent="";
  document.getElementById("note").textContent="The regime is unavailable because dashboard data could not be loaded. "+error.message;
+ window.dashboardError=true; if(window.applyLanguage) window.applyLanguage();
 });
 </script></body></html>
