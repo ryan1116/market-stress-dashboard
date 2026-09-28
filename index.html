@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="terminal.css?v=1"></head><body><div class="wrap">
 <div class="terminal-bar"><span>MSD / U.S. EQUITIES</span><span>MARKET REGIME MONITOR</span></div>
 <nav class="terminal-nav" aria-label="Resources"><a href="./" aria-current="page"><span class="key">01</span>OVERVIEW</a><a href="whitepaper.html"><span class="key">02</span>WHITEPAPER</a><a href="#sources-heading"><span class="key">03</span>DATA SOURCES</a></nav>
-<div class="top"><div><h1>Market Stress Dashboard <span class="muted">v0.2.3</span></h1><div class="muted">Valuation × Discount Rate × Earnings Revision Proxy</div></div><div id="regime" class="regime">Loading</div></div>
+<div class="top"><div><h1>Market Stress Dashboard</h1><div class="muted">Valuation × Discount Rate × Earnings Revision Proxy</div></div><div id="regime" class="regime">Loading</div></div>
 <div class="card section"><b>Current interpretation</b><p id="note" class="note"></p><div id="asof" class="muted"></div></div>
 <div id="grid" class="grid"></div>
 <div class="card section"><b>Earnings proxy methodology</b><p class="note muted">The proxy uses the top 24 SPY holdings, combines duplicate share classes, and weights 60-day changes in future fiscal-year EPS estimates by SPY holding weights. Analyst revision breadth is also shown. This is a partial-index proxy, not the official FactSet S&amp;P 500 bottom-up EPS series.</p><div id="quality" class="quality"></div></div>
@@ -13,6 +13,7 @@
 <div class="table-scroll"><table><thead><tr><th scope="col">Data</th><th scope="col">Source</th><th scope="col">Date</th><th scope="col">Date type / notes</th></tr></thead><tbody id="sources"></tbody></table></div>
 <p id="generated" class="quality"></p>
 </section>
+<footer class="version-note">Dashboard version · v0.2.3</footer>
 </div><script>
 const f=(v,d=2)=>v==null?"N/A":Number(v).toFixed(d);
 function interpretationLines(d){
