@@ -325,7 +325,7 @@
   },
   {
     "version": "0.2.3",
-    "generated_at": "2026-10-03T01:19:59.960478+00:00",
+    "generated_at": "2026-10-05T02:00:15.962154+00:00",
     "rate_sources": {
       "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
       "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
@@ -361,16 +361,16 @@
         "label": "Earnings Confirmation",
         "state": "STRONG",
         "source_mode": "AUTO_PROXY",
-        "revision_60d": 6.3,
+        "revision_60d": 1.86,
         "seasonal_benchmark_60d": -1.7,
-        "revision_surprise": 8.0,
+        "revision_surprise": 3.56,
         "baseline_mode": "PROVISIONAL_CONFIG",
-        "coverage_weight": 0.3244,
-        "companies_used": 18,
+        "coverage_weight": 0.4129,
+        "companies_used": 20,
         "quality": "CURRENT",
-        "analyst_revision_breadth": 0.164,
-        "positive_company_weight": 0.735,
-        "as_of": "2026-09-28"
+        "analyst_revision_breadth": 0.265,
+        "positive_company_weight": 0.608,
+        "as_of": "2026-10-05"
       }
     },
     "context": {
