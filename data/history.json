@@ -454,5 +454,69 @@
         "Term premium stale: displayed for reference, excluded from shock signal"
       ]
     }
+  },
+  {
+    "version": "0.2.3",
+    "generated_at": "2026-10-07T01:44:53.398363+00:00",
+    "rate_sources": {
+      "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
+      "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
+      "T10YIE": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE"
+    },
+    "as_of": "2026-10-05",
+    "regime": "UNDETERMINED",
+    "regime_note": "UNAVAILABLE valuation vulnerability + HIGH discount-rate shock + STRONG earnings confirmation.",
+    "pillars": {
+      "valuation": {
+        "label": "Valuation Vulnerability",
+        "state": "UNAVAILABLE",
+        "equity_yield_gap": 2.34,
+        "forward_earnings_yield": 5.29,
+        "forward_pe": 18.9,
+        "as_of": "2026-09-21",
+        "real10y": 2.95
+      },
+      "discount": {
+        "label": "Discount-Rate Shock",
+        "state": "HIGH",
+        "real10y": 2.95,
+        "real_1m_change_bp": 52.0,
+        "real_3m_change_bp": 65.0,
+        "term_premium": 1.0847,
+        "term_premium_1m_change_bp": 18.6,
+        "term_premium_as_of": "2026-10-02",
+        "term_premium_quality": "AUTO",
+        "term_premium_source": "https://fred.stlouisfed.org/series/THREEFYTP10",
+        "breakeven10y": 2.36
+      },
+      "earnings": {
+        "label": "Earnings Confirmation",
+        "state": "STRONG",
+        "source_mode": "AUTO_PROXY",
+        "revision_60d": 1.86,
+        "seasonal_benchmark_60d": -1.7,
+        "revision_surprise": 3.56,
+        "baseline_mode": "PROVISIONAL_CONFIG",
+        "coverage_weight": 0.4129,
+        "companies_used": 20,
+        "quality": "CURRENT",
+        "analyst_revision_breadth": 0.265,
+        "positive_company_weight": 0.608,
+        "as_of": "2026-10-05"
+      }
+    },
+    "context": {
+      "nominal10y": 5.31,
+      "ai_credit_premium_bp": 37.0
+    },
+    "data_quality": {
+      "rates": "AUTO",
+      "term_premium": "AUTO",
+      "forward_pe": "STALE",
+      "earnings": "CURRENT",
+      "earnings_source": "AUTO_PROXY",
+      "ai_credit": "MANUAL",
+      "warnings": []
+    }
   }
 ]
