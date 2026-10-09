@@ -1,30 +1,30 @@
 {
   "version": "0.2.3",
-  "generated_at": "2026-10-08T02:12:33.502989+00:00",
+  "generated_at": "2026-10-09T02:26:55.028900+00:00",
   "rate_sources": {
     "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
     "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
     "T10YIE": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE"
   },
-  "as_of": "2026-10-06",
+  "as_of": "2026-10-07",
   "regime": "UNDETERMINED",
   "regime_note": "UNAVAILABLE valuation vulnerability + HIGH discount-rate shock + STRONG earnings confirmation.",
   "pillars": {
     "valuation": {
       "label": "Valuation Vulnerability",
       "state": "UNAVAILABLE",
-      "equity_yield_gap": 2.38,
+      "equity_yield_gap": 2.37,
       "forward_earnings_yield": 5.29,
       "forward_pe": 18.9,
       "as_of": "2026-09-21",
-      "real10y": 2.91
+      "real10y": 2.92
     },
     "discount": {
       "label": "Discount-Rate Shock",
       "state": "HIGH",
-      "real10y": 2.91,
-      "real_1m_change_bp": 48.0,
-      "real_3m_change_bp": 60.0,
+      "real10y": 2.92,
+      "real_1m_change_bp": 49.0,
+      "real_3m_change_bp": 61.0,
       "term_premium": 1.0847,
       "term_premium_1m_change_bp": 18.6,
       "term_premium_as_of": "2026-10-02",
@@ -49,7 +49,7 @@
     }
   },
   "context": {
-    "nominal10y": 5.27,
+    "nominal10y": 5.28,
     "ai_credit_premium_bp": 37.0
   },
   "data_quality": {
