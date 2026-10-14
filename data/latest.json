@@ -1,6 +1,6 @@
 {
   "version": "0.2.3",
-  "generated_at": "2026-10-14T01:30:10.926023+00:00",
+  "generated_at": "2026-10-14T08:14:22.376649+00:00",
   "rate_sources": {
     "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
     "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
