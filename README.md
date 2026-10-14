@@ -115,6 +115,6 @@ These are collector-owned output tabs, not manual input forms. Collection replac
 4. In Sheets, choose File → Share → Publish to web. Publish **only `MSD_Latest`**, in CSV format, with automatic republication. This exposes that tab's market metrics, dates and source metadata to anyone; the other tabs need not be public.
 5. Put the resulting `https://docs.google.com/spreadsheets/d/e/.../pub?gid=...&single=true&output=csv` link in `config/data_backend.json` and change `mode` to `google_sheets`. Verify unauthenticated CSV access, browser CORS and the live page before completing the switch. Publishing may lag writes by several minutes.
 
-Until steps 1–5 are verified, `mode` stays `repository` and sheet synchronization stays disabled. No automatic fallback is used once sheet mode is enabled: inaccessible, malformed or more-than-four-day-old snapshots produce the existing unavailable state instead of silently showing another source. Rollback is explicit: set `mode` back to `repository`.
+Connection verified on 2026-10-14: sheet synchronization is enabled and the frontend uses `google_sheets` mode. For a new setup, keep `mode` as `repository` until steps 1–5 are verified. No automatic fallback is used once sheet mode is enabled: inaccessible, malformed or more-than-four-day-old snapshots produce the existing unavailable state instead of silently showing another source. Rollback is explicit: set `mode` back to `repository`.
 
 Checks: `python3 scripts/sync_sheets.py --dry-run`, `python3 tests/check_sheets.py`, `python3 tests/run_checks.py`.
