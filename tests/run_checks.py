@@ -29,15 +29,19 @@ def check(name, fn):
     except Exception as exc:
         RESULTS.append(dict(name=name, status='ERROR', observed=f'{type(exc).__name__}: {exc}'))
 
-def dashboard(proxy=None, broken=False, stale=False, desync=False, tp_failure=False, fallback_age=0, pe_age=0, tp_age=0):
+def dashboard(proxy=None, broken=False, stale=False, desync=False, tp_failure=False, fallback_age=0, pe_age=0, tp_age=0, auto_pe=None):
     with tempfile.TemporaryDirectory() as td:
         root = Path(td) / 'app'
         shutil.copytree(SOURCE, root, ignore=shutil.ignore_patterns(".git", "tests", ".DS_Store"))
+        (root/'data/forward_pe.json').unlink(missing_ok=True)
+        if auto_pe is not None:
+            (root/'data/forward_pe.json').write_text(json.dumps(auto_pe))
         manual=root/'config/manual_metrics.json'
         m=json.loads(manual.read_text())
         m['eps_fallback']['as_of']=(TODAY-timedelta(days=fallback_age)).isoformat()
         m['forward_pe']['as_of']=(TODAY-timedelta(days=pe_age)).isoformat()
         manual.write_text(json.dumps(m))
+        (root/'data/eps_revision_proxy.json').unlink(missing_ok=True)
         if proxy is not None:
             (root/'data/eps_revision_proxy.json').write_text(json.dumps(proxy))
         if broken:
@@ -75,6 +79,7 @@ def eps(negative=False, low=False, unsorted=False, repeat=False, current=None, p
     with tempfile.TemporaryDirectory() as td:
         root=Path(td)/'app'
         shutil.copytree(SOURCE,root,ignore=shutil.ignore_patterns(".git", "tests", ".DS_Store"))
+        (root/'data/eps_revision_history.json').write_text('[]')
         cfg=root/'config/eps_proxy_config.json'
         c=json.loads(cfg.read_text())
         if unsorted: c['max_holdings']=2
@@ -141,7 +146,10 @@ check('expired_pe_blocks_regime',lambda: ((d:=dashboard(pe_age=15)[0])['regime']
 check('bad_proxy_and_stale_fallback_blocks_regime',lambda: ((d:=dashboard(broken=True,stale=True)[0])['regime']=='UNDETERMINED',d['pillars']['earnings']))
 check('fred_term_premium_own_date_and_delta',lambda: ((d:=dashboard(tp_age=3)[0])['pillars']['discount']['term_premium_1m_change_bp']==10 and d['pillars']['discount']['term_premium_as_of']==(TODAY-timedelta(days=3)).isoformat(),d['pillars']['discount']))
 check('stale_term_premium_visible_but_flagged',lambda: ((d:=dashboard(tp_age=10)[0])['pillars']['discount']['term_premium']==.9 and d['data_quality']['term_premium']=='STALE',d['pillars']['discount']))
-check('source_unchanged',lambda: (before==digest(),'SHA-256 comparison of every source file'))
+check('automatic_pe_restores_stale_manual',lambda: ((d:=dashboard(pe_age=23,auto_pe=dict(value=19.1,as_of=TODAY.isoformat(),source='FactSet',source_mode='AUTO'))[0])['data_quality']['forward_pe']=='AUTO' and d['pillars']['valuation']['forward_pe']==19.1 and d['pillars']['valuation']['state']!='UNAVAILABLE',d['pillars']['valuation']))
+check('expired_automatic_pe_cannot_refresh_date',lambda: ((d:=dashboard(pe_age=23,auto_pe=dict(value=19.1,as_of=(TODAY-timedelta(days=15)).isoformat(),source='FactSet',source_mode='AUTO'))[0])['regime']=='UNDETERMINED',d['pillars']['valuation']))
+check('invalid_automatic_pe_falls_back',lambda: ((d:=dashboard(auto_pe=[])[0])['data_quality']['forward_pe']=='MANUAL',d['data_quality']))
+check('source_unchanged' ,lambda: (before==digest(),'SHA-256 comparison of every source file'))
 report={'date':TODAY.isoformat(),'mode':'offline fixtures; unchanged scripts in temporary copies','results':RESULTS}
 (BASE/'tests/results.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
 for r in RESULTS: print(r['status'],r['name'])

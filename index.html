@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Market Stress Dashboard v0.2.3</title>
-<link rel="stylesheet" href="terminal.css?v=4"><script src="glossary.js?v=6" defer></script><script src="ui.js?v=6" defer></script></head><body><div class="wrap">
+<link rel="stylesheet" href="terminal.css?v=4"><script src="glossary.js?v=6" defer></script><script src="ui.js?v=7" defer></script></head><body><div class="wrap">
 <div class="terminal-bar"><span>MSD / U.S. EQUITIES</span><div class="language-toggle" role="group" aria-label="Language"><button type="button" data-language="en" aria-pressed="true">English</button><button type="button" data-language="ko" aria-pressed="false">Korean (한글)</button></div></div>
 <nav class="terminal-nav" aria-label="Resources"><a href="./" aria-current="page"><span class="key">01</span>OVERVIEW</a><a href="whitepaper.html"><span class="key">02</span>WHITEPAPER</a><a href="#sources-heading"><span class="key">03</span>DATA SOURCES</a></nav>
 <div class="top"><div><h1>Market Stress Dashboard</h1><div class="muted">Valuation × Discount Rate × Earnings Revision Proxy</div></div><section class="regime-overview" aria-label="Market regime scale"><div class="regime-summary"><span id="regime-caption">CURRENT REGIME</span><div id="regime" class="regime">Loading</div></div><ol id="regime-scale" class="regime-scale"></ol><div class="regime-axis"><span id="scale-start">Lower concern</span><span id="scale-end">Higher concern</span></div><div id="scale-note" class="scale-note">Qualitative categories · not a probability scale</div></section></div>
@@ -23,7 +23,7 @@ function qualitySummary(d,lang='en'){
  const ko=lang==='ko',q=d.data_quality,e=d.pillars.earnings;
  const sentences=[];
  sentences.push(q.rates==='AUTO'?(ko?'금리는 자동 갱신됩니다.':'Rates are updated automatically.'):(ko?'금리 데이터의 최신성을 확인해야 합니다.':'Rate data need a freshness check.'));
- sentences.push(q.forward_pe==='MANUAL'?(ko?'선행 PER은 수동 입력값입니다.':'Forward P/E is entered manually.'):(ko?'선행 PER 입력값을 다시 확인해야 합니다.':'The forward P/E input needs review.'));
+ sentences.push(q.forward_pe==='AUTO'?(ko?'선행 PER은 FactSet 보고서에서 자동 갱신됩니다.':'Forward P/E is updated automatically from FactSet reports.'):q.forward_pe==='MANUAL'?(ko?'선행 PER은 수동 입력값입니다.':'Forward P/E is entered manually.'):(ko?'선행 PER 입력값을 다시 확인해야 합니다.':'The forward P/E input needs review.'));
  sentences.push(e.quality==='CURRENT'?(e.source_mode==='AUTO_PROXY'?(ko?'이익 추정치는 자동 수집한 유효한 자료입니다.':'Earnings estimates are current and collected automatically.'):(ko?'이익은 유효한 수동 대체 자료를 사용합니다.':'Earnings use a current manual fallback.')):(ko?'이익 자료가 유효하지 않아 이익 판정에 사용하지 않습니다.':'Earnings data do not meet the requirements for an active signal.'));
  if(q.term_premium==='STALE')sentences.push(ko?'기간 프리미엄은 오래된 값이므로 참고용으로만 표시합니다.':'Term premium is outdated and shown for reference only.');
  else if(q.term_premium==='UNAVAILABLE')sentences.push(ko?'기간 프리미엄은 현재 확인할 수 없습니다.':'Term premium is currently unavailable.');
@@ -81,7 +81,7 @@ Promise.all([loadJSON("data/latest.json"),loadJSON("config/manual_metrics.json")
   ["10Y real yield · 1M / 3M changes", "FRED · DFII10", "https://fred.stlouisfed.org/series/DFII10", d.as_of, "Observation date; changes end on this date"],
   ["10Y breakeven inflation", "FRED · T10YIE", "https://fred.stlouisfed.org/series/T10YIE", d.as_of, "Observation date used in this snapshot"],
   ["10Y term premium · 1M change", "FRED · THREEFYTP10 (Kim–Wright)", "https://fred.stlouisfed.org/series/THREEFYTP10", x.term_premium_as_of, "Observation date · "+qualityLabel(x.term_premium_quality)],
-  ["Forward P/E · earnings yield", manual.forward_pe.source, null, v.as_of||manual.forward_pe.as_of, "Manual input date; original report URL not recorded. Earnings yield = 100 / P/E."],
+  ["Forward P/E · earnings yield", v.source||manual.forward_pe.source, v.source_url||null, v.as_of||manual.forward_pe.as_of, v.date_type==="REPORT_DATE"?"Report publication date; underlying price observation date not independently recorded. Earnings yield = 100 / P/E.":"Manual input date; original report URL not recorded. Earnings yield = 100 / P/E."],
   ["EPS revisions · analyst breadth · SPY coverage", automatic?"Alpha Vantage · ETF_PROFILE / EARNINGS_ESTIMATES":manual.eps_fallback.source, automatic?"https://www.alphavantage.co/documentation/":null, e.as_of, automatic?"Collection date; individual provider update times are unavailable":"Manual fallback input date; original report URL not recorded"],
   ["Seasonal baseline (provisional)", e.baseline_mode==="EMPIRICAL_SAME_MONTH_MEDIAN"?"Stored proxy history": "FactSet benchmark · manual configuration", null, null, "Benchmark reference date not recorded; seasonal definition is under research"],
   ["AI credit premium (context)", manual.ai_credit_premium_bp.source, null, manual.ai_credit_premium_bp.as_of, "Manual input date; original report URL not recorded"]

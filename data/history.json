@@ -715,23 +715,26 @@
   },
   {
     "version": "0.2.3",
-    "generated_at": "2026-10-14T01:29:03.453517+00:00",
+    "generated_at": "2026-10-14T10:29:40.152297+09:00",
     "rate_sources": {
       "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
       "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
       "T10YIE": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE"
     },
     "as_of": "2026-10-09",
-    "regime": "UNDETERMINED",
-    "regime_note": "UNAVAILABLE valuation vulnerability + HIGH discount-rate shock + STRONG earnings confirmation.",
+    "regime": "YELLOW-ORANGE",
+    "regime_note": "HIGH valuation vulnerability + HIGH discount-rate shock + STRONG earnings confirmation.",
     "pillars": {
       "valuation": {
         "label": "Valuation Vulnerability",
-        "state": "UNAVAILABLE",
-        "equity_yield_gap": 2.38,
-        "forward_earnings_yield": 5.29,
-        "forward_pe": 18.9,
-        "as_of": "2026-09-21",
+        "state": "HIGH",
+        "equity_yield_gap": 2.33,
+        "forward_earnings_yield": 5.24,
+        "forward_pe": 19.1,
+        "as_of": "2026-10-09",
+        "source": "FactSet Earnings Insight",
+        "source_url": "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_100926.pdf",
+        "date_type": "REPORT_DATE",
         "real10y": 2.91
       },
       "discount": {
@@ -770,7 +773,7 @@
     "data_quality": {
       "rates": "AUTO",
       "term_premium": "AUTO",
-      "forward_pe": "STALE",
+      "forward_pe": "AUTO",
       "earnings": "CURRENT",
       "earnings_source": "AUTO_PROXY",
       "ai_credit": "MANUAL",

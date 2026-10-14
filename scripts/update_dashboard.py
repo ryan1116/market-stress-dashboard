@@ -81,10 +81,24 @@ try:
 except Exception as ex:
     print(type(ex).__name__); tp=tp1=tpdate=None; tpq="UNAVAILABLE"
 
-pe=finite(MANUAL["forward_pe"]["value"])
+pe_input=MANUAL["forward_pe"]
+auto_pe=ROOT/"data/forward_pe.json"
+if auto_pe.exists():
+    try:
+        candidate=json.loads(auto_pe.read_text())
+        if (freshness(candidate.get("as_of"),POLICY["forward_pe_max_age_days"])=="CURRENT"
+                and 0<finite(candidate["value"])<100
+                and isinstance(candidate.get("source"),str) and candidate["source"].strip()
+                and (freshness(pe_input.get("as_of"),POLICY["forward_pe_max_age_days"])!="CURRENT"
+                     or candidate["as_of"]>=pe_input["as_of"])):
+            pe_input=candidate
+    except (OSError,ValueError,TypeError,KeyError,AttributeError) as ex:
+        WARNINGS.append("Automatic forward P/E rejected: "+str(ex))
+pe=finite(pe_input["value"])
 if pe<=0: raise ValueError("Forward P/E must be positive")
 ey=100/pe; gap=round(ey-real,2)
-pe_status=freshness(MANUAL["forward_pe"].get("as_of"),POLICY["forward_pe_max_age_days"])
+pe_status=freshness(pe_input.get("as_of"),POLICY["forward_pe_max_age_days"])
+if pe_status!="CURRENT": WARNINGS.append("Forward P/E input: "+pe_status)
 earn_mode="FALLBACK"; coverage=breadth=posweight=companies=None
 fb=MANUAL["eps_fallback"]
 rev=bench=None; es_asof=fb.get("as_of"); baseline_mode="FACTSET_FALLBACK"
@@ -121,11 +135,11 @@ rg=regime(vs,ds,es)
 data={"version":"0.2.3","generated_at":datetime.now().astimezone().isoformat(),"rate_sources":{s:f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={s}" for s in dfs},"as_of":asof.date().isoformat(),"regime":rg,
 "regime_note":f"{vs} valuation vulnerability + {ds} discount-rate shock + {es} earnings confirmation.",
 "pillars":{
- "valuation":{"label":"Valuation Vulnerability","state":vs,"equity_yield_gap":gap,"forward_earnings_yield":round(ey,2),"forward_pe":pe,"as_of":MANUAL["forward_pe"].get("as_of"),"real10y":round(real,2)},
+ "valuation":{"label":"Valuation Vulnerability","state":vs,"equity_yield_gap":gap,"forward_earnings_yield":round(ey,2),"forward_pe":pe,"as_of":pe_input.get("as_of"),"source":pe_input["source"],"source_url":pe_input.get("source_url"),"date_type":pe_input.get("date_type","INPUT_DATE"),"real10y":round(real,2)},
  "discount":{"label":"Discount-Rate Shock","state":ds,"real10y":round(real,2),"real_1m_change_bp":r1,"real_3m_change_bp":r3,"term_premium":tp,"term_premium_1m_change_bp":tp1,"term_premium_as_of":tpdate,"term_premium_quality":tpq,"term_premium_source":"https://fred.stlouisfed.org/series/THREEFYTP10","breakeven10y":round(bei,2)},
  "earnings":{"label":"Earnings Confirmation","state":es,"source_mode":earn_mode,"revision_60d":rounded(rev),"seasonal_benchmark_60d":rounded(bench),"revision_surprise":surprise,"baseline_mode":baseline_mode,"coverage_weight":coverage,"companies_used":companies,"quality":earnings_status,"analyst_revision_breadth":breadth,"positive_company_weight":posweight,"as_of":es_asof}},
 "context":{"nominal10y":round(nom,2),"ai_credit_premium_bp":float(MANUAL["ai_credit_premium_bp"]["value"])},
-"data_quality":{"rates":"AUTO" if rates_status=="CURRENT" else rates_status,"term_premium":tpq,"forward_pe":"MANUAL" if pe_status=="CURRENT" else pe_status,"earnings":earnings_status,"earnings_source":earn_mode,"ai_credit":"MANUAL","warnings":WARNINGS}}
+"data_quality":{"rates":"AUTO" if rates_status=="CURRENT" else rates_status,"term_premium":tpq,"forward_pe":pe_input.get("source_mode","MANUAL") if pe_status=="CURRENT" else pe_status,"earnings":earnings_status,"earnings_source":earn_mode,"ai_credit":"MANUAL","warnings":WARNINGS}}
 LATEST.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding="utf-8")
 hist=json.loads(HISTORY.read_text(encoding="utf-8"))
 hist=[row for row in hist if row.get("as_of")!=data["as_of"]]

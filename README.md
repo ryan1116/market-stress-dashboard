@@ -10,6 +10,14 @@ Repository: https://github.com/ryan1116/market-stress-dashboard
 - Seasonal definition is a separate research backlog, not a blocker for data collection or deployment preparation. The provisional benchmark remains labeled; automatic empirical-baseline switching is disabled pending research.
 - 29 offline regression checks passed. EPS live API access, GitHub scheduled execution and visual browser rendering remain unverified.
 
+## Forward P/E refresh (2026-10-14)
+
+The daily dashboard workflow now checks recent Friday FactSet Earnings Insight PDFs and saves the full-index forward 12-month P/E to `data/forward_pe.json`. The original Reuters/LSEG manual input remains unchanged as fallback. FactSet and LSEG estimates can differ; this is an explicit source change, not a historical restatement.
+
+The saved date is the **report publication date**, not the collection date or an independently verified underlying price date. The existing 14-day validity rule is retained. A missing report, changed format or failed download leaves the saved value and its date unchanged; expired inputs still block classification. The page links the actual report. Standard Friday editions are supported; other publication patterns require a collector update.
+
+Run `python3 scripts/update_forward_pe.py` (requires Poppler `pdftotext`), then `python3 scripts/update_dashboard.py`. GitHub Actions installs Poppler. Offline checks: `python3 tests/run_checks.py` and `python3 tests/check_forward_pe.py`.
+
 ## API key setup
 
 Open https://github.com/ryan1116/market-stress-dashboard/settings/secrets/actions
