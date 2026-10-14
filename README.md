@@ -92,3 +92,29 @@ The code stores weekly proxy history. Empirical seasonal-baseline switching is d
 - Different issuers have different fiscal year ends.
 - The proxy is designed to detect direction and breadth of estimate revisions, not reproduce FactSet index EPS exactly.
 - Regime thresholds remain operating hypotheses, not optimized trading rules.
+
+## Google Sheets backend
+
+Target: https://docs.google.com/spreadsheets/d/1KpPI7uOPcqlnxrVzkGpjlyj3hp7i0uvwrf6agqvYMAw/edit
+
+Collectors continue running in GitHub Actions. `scripts/sync_sheets.py` writes one atomic Sheets batch after collection and before committing the backup JSON files. Both scheduled workflows share one concurrency group. Financial calculations remain in the existing collector; the frontend reads the completed snapshot from the sheet.
+
+Managed tabs (existing unrelated tabs remain untouched):
+- `MSD_Latest`: typed metric paths and values, including source metadata used by the web page.
+- `MSD_History`: stored market snapshots (one per rates observation date, retained under the existing history policy).
+- `MSD_EPS_Constituents`: the latest company-level EPS revisions and weights.
+- `MSD_EPS_History`: stored weekly earnings proxy snapshots.
+
+These are collector-owned output tabs, not manual input forms. Collection replaces their contents. Edit manual inputs in `config/manual_metrics.json`; only collected public market data enter these tabs. Credentials never enter the sheet, repository or browser. Historical tables contain native numeric cells; the published transport tab uses explicit types so CSV cannot reinterpret dates or missing values.
+
+### One-time connection
+
+1. Enable Google Sheets API in a Google Cloud project. Create a dedicated service account (no project-wide role needed) and share only this spreadsheet with its email as Editor.
+2. Store that service account's JSON key in the repository Actions secret `GOOGLE_SERVICE_ACCOUNT_JSON`. Do not paste keys into chat or commit them. Restrict the account to this sheet; rotate the key under your normal credential policy.
+3. Set repository Actions variable `SHEETS_SYNC_ENABLED` to `true`. Run `Update Market Stress Dashboard` manually. Verify its Sheets step and sheet values before enabling the frontend.
+4. In Sheets, choose File → Share → Publish to web. Publish **only `MSD_Latest`**, in CSV format, with automatic republication. This exposes that tab's market metrics, dates and source metadata to anyone; the other tabs need not be public.
+5. Put the resulting `https://docs.google.com/spreadsheets/d/e/.../pub?gid=...&single=true&output=csv` link in `config/data_backend.json` and change `mode` to `google_sheets`. Verify unauthenticated CSV access, browser CORS and the live page before completing the switch. Publishing may lag writes by several minutes.
+
+Until steps 1–5 are verified, `mode` stays `repository` and sheet synchronization stays disabled. No automatic fallback is used once sheet mode is enabled: inaccessible, malformed or more-than-four-day-old snapshots produce the existing unavailable state instead of silently showing another source. Rollback is explicit: set `mode` back to `repository`.
+
+Checks: `python3 scripts/sync_sheets.py --dry-run`, `python3 tests/check_sheets.py`, `python3 tests/run_checks.py`.

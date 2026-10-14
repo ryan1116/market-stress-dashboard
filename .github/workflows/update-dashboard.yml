@@ -3,6 +3,9 @@ on:
   schedule:
     - cron: "30 22 * * 1-5"   # 07:30 KST Tue-Sat
   workflow_dispatch:
+concurrency:
+  group: market-data-update
+  cancel-in-progress: false
 permissions:
   contents: write
 jobs:
@@ -17,6 +20,13 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y poppler-utils
       - run: python scripts/update_forward_pe.py
       - run: python scripts/update_dashboard.py
+      - name: Publish collected data to Google Sheets
+        if: vars.SHEETS_SYNC_ENABLED == 'true'
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          pip install google-auth requests
+          python scripts/sync_sheets.py
       - name: Commit
         run: |
           git config user.name "market-stress-bot"
