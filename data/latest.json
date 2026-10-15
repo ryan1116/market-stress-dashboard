@@ -1,33 +1,33 @@
 {
   "version": "0.2.3",
-  "generated_at": "2026-10-14T08:14:22.376649+00:00",
+  "generated_at": "2026-10-15T00:45:31.519286+00:00",
   "rate_sources": {
     "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
     "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
     "T10YIE": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE"
   },
-  "as_of": "2026-10-09",
+  "as_of": "2026-10-13",
   "regime": "YELLOW-ORANGE",
   "regime_note": "HIGH valuation vulnerability + HIGH discount-rate shock + STRONG earnings confirmation.",
   "pillars": {
     "valuation": {
       "label": "Valuation Vulnerability",
       "state": "HIGH",
-      "equity_yield_gap": 2.33,
+      "equity_yield_gap": 2.36,
       "forward_earnings_yield": 5.24,
       "forward_pe": 19.1,
       "as_of": "2026-10-09",
       "source": "FactSet Earnings Insight",
       "source_url": "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_100926.pdf",
       "date_type": "REPORT_DATE",
-      "real10y": 2.91
+      "real10y": 2.88
     },
     "discount": {
       "label": "Discount-Rate Shock",
       "state": "HIGH",
-      "real10y": 2.91,
-      "real_1m_change_bp": 45.0,
-      "real_3m_change_bp": 59.0,
+      "real10y": 2.88,
+      "real_1m_change_bp": 28.0,
+      "real_3m_change_bp": 56.0,
       "term_premium": 1.0729,
       "term_premium_1m_change_bp": 17.3,
       "term_premium_as_of": "2026-10-09",
@@ -52,7 +52,7 @@
     }
   },
   "context": {
-    "nominal10y": 5.24,
+    "nominal10y": 5.21,
     "ai_credit_premium_bp": 37.0
   },
   "data_quality": {
