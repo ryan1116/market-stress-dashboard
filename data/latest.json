@@ -1,39 +1,39 @@
 {
   "version": "0.2.3",
-  "generated_at": "2026-10-16T00:38:07.659098+00:00",
+  "generated_at": "2026-10-17T00:42:03.510878+00:00",
   "rate_sources": {
     "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
     "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
     "T10YIE": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE"
   },
-  "as_of": "2026-10-14",
-  "regime": "YELLOW-ORANGE",
-  "regime_note": "HIGH valuation vulnerability + HIGH discount-rate shock + STRONG earnings confirmation.",
+  "as_of": "2026-10-15",
+  "regime": "YELLOW",
+  "regime_note": "HIGH valuation vulnerability + MODERATE discount-rate shock + STRONG earnings confirmation.",
   "pillars": {
     "valuation": {
       "label": "Valuation Vulnerability",
       "state": "HIGH",
-      "equity_yield_gap": 2.4,
-      "forward_earnings_yield": 5.24,
-      "forward_pe": 19.1,
-      "as_of": "2026-10-09",
+      "equity_yield_gap": 2.48,
+      "forward_earnings_yield": 5.26,
+      "forward_pe": 19.0,
+      "as_of": "2026-10-16",
       "source": "FactSet Earnings Insight",
-      "source_url": "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_100926.pdf",
+      "source_url": "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_101626.pdf",
       "date_type": "REPORT_DATE",
-      "real10y": 2.84
+      "real10y": 2.78
     },
     "discount": {
       "label": "Discount-Rate Shock",
-      "state": "HIGH",
-      "real10y": 2.84,
-      "real_1m_change_bp": 24.0,
-      "real_3m_change_bp": 49.0,
+      "state": "MODERATE",
+      "real10y": 2.78,
+      "real_1m_change_bp": 16.0,
+      "real_3m_change_bp": 47.0,
       "term_premium": 1.0729,
       "term_premium_1m_change_bp": 17.3,
       "term_premium_as_of": "2026-10-09",
-      "term_premium_quality": "AUTO",
+      "term_premium_quality": "STALE",
       "term_premium_source": "https://fred.stlouisfed.org/series/THREEFYTP10",
-      "breakeven10y": 2.35
+      "breakeven10y": 2.32
     },
     "earnings": {
       "label": "Earnings Confirmation",
@@ -52,16 +52,18 @@
     }
   },
   "context": {
-    "nominal10y": 5.19,
+    "nominal10y": 5.1,
     "ai_credit_premium_bp": 37.0
   },
   "data_quality": {
     "rates": "AUTO",
-    "term_premium": "AUTO",
+    "term_premium": "STALE",
     "forward_pe": "AUTO",
     "earnings": "CURRENT",
     "earnings_source": "AUTO_PROXY",
     "ai_credit": "MANUAL",
-    "warnings": []
+    "warnings": [
+      "Term premium stale: displayed for reference, excluded from shock signal"
+    ]
   }
 }
