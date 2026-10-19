@@ -94,21 +94,10 @@ company_positive=sum(r["spy_weight"] for r in rows if r["revision_60d_pct"]>0)/c
 rev60=wavg("revision_60d_pct")
 
 hist=json.loads(HIST.read_text(encoding="utf-8")) if HIST.exists() else []
-# Retain one observation per date, and never let today's reruns enter their own baseline.
-hist=list({x["as_of"]:x for x in hist if x.get("as_of") and x["as_of"]<date.today().isoformat()}.values())
-# Once we have ~1 year of weekly observations, use same-week-of-year historical
-# proxy observations as an empirical seasonal baseline. Until then use the
-# explicitly labeled provisional benchmark in config.
-baseline=float(CFG["seasonal_benchmark_60d"])
-baseline_mode="PROVISIONAL_CONFIG"
-if CFG.get("enable_empirical_baseline",False) and len(hist)>=int(CFG["history_min_observations_for_empirical_baseline"]):
-    month=date.today().month
-    seasonal=[x["revision_60d_pct"] for x in hist
-              if x.get("as_of","")[5:7]==f"{month:02d}" and x.get("revision_60d_pct") is not None]
-    if len(seasonal)>=3:
-        seasonal=sorted(seasonal)
-        baseline=seasonal[len(seasonal)//2]
-        baseline_mode="EMPIRICAL_SAME_MONTH_MEDIAN"
+# Retain one observation per date and method; preserve pre-change snapshots.
+hist=list({(x["as_of"],x.get("baseline_mode")):x for x in hist if x.get("as_of") and (x["as_of"]<date.today().isoformat() or x.get("baseline_mode")!="DISABLED")}.values())
+# Seasonal adjustment removed: retain null legacy fields for historical compatibility.
+baseline_mode="DISABLED"
 
 out={
  "as_of":datetime.now(timezone.utc).date().isoformat(),
@@ -120,9 +109,9 @@ out={
  "revision_30d_pct":round(wavg("revision_30d_pct"),3) if wavg("revision_30d_pct") is not None else None,
  "revision_60d_pct":round(rev60,3),
  "revision_90d_pct":round(wavg("revision_90d_pct"),3) if wavg("revision_90d_pct") is not None else None,
- "seasonal_benchmark_60d":round(baseline,3),
+ "seasonal_benchmark_60d":None,
  "baseline_mode":baseline_mode,
- "revision_surprise_60d":round(rev60-baseline,3),
+ "revision_surprise_60d":None,
  "analyst_revision_breadth_30d":round(analyst_breadth,3) if analyst_breadth is not None else None,
  "positive_company_weight_60d":round(company_positive,3),
  "constituents":rows

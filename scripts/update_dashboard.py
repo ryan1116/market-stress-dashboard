@@ -51,13 +51,8 @@ def dstate(r1,r3,tp):
     if r1>=25 or r3>=50 or (tp is not None and tp>=15): return "HIGH"
     if r1<=-25 and r3<=-40: return "EASING"
     return "MODERATE"
-def estate(s):
-    if s>1: return "STRONG"
-    if s>=-1:return "NEUTRAL"
-    if s>-3:return "WEAKENING"
-    return "NEGATIVE"
 def regime(v,d,e):
-    if "UNAVAILABLE" in (v,d,e): return "UNDETERMINED"
+    if "UNAVAILABLE" in (v,d,e) or e=="UNRATED": return "UNDETERMINED"
     if v=="HIGH" and d=="HIGH" and e=="NEGATIVE":return "RED"
     if v=="HIGH" and d=="HIGH" and e=="WEAKENING":return "ORANGE"
     if v=="HIGH" and d=="HIGH" and e=="STRONG":return "YELLOW-ORANGE"
@@ -101,10 +96,10 @@ pe_status=freshness(pe_input.get("as_of"),POLICY["forward_pe_max_age_days"])
 if pe_status!="CURRENT": WARNINGS.append("Forward P/E input: "+pe_status)
 earn_mode="FALLBACK"; coverage=breadth=posweight=companies=None
 fb=MANUAL["eps_fallback"]
-rev=bench=None; es_asof=fb.get("as_of"); baseline_mode="FACTSET_FALLBACK"
+rev=None; es_asof=fb.get("as_of"); baseline_mode="DISABLED"
 earnings_status=freshness(es_asof,POLICY["fallback_max_age_days"])
 try:
-    rev=finite(fb["revision_60d"]); bench=finite(fb["seasonal_benchmark_60d"])
+    rev=finite(fb["revision_60d"])
 except (ValueError,TypeError,KeyError): earnings_status="INVALID_VALUE"
 if EPS_PROXY.exists():
     try:
@@ -118,31 +113,31 @@ if EPS_PROXY.exists():
             raise ValueError("insufficient or invalid coverage")
         if candidate_companies<POLICY["minimum_companies"] or not candidate_companies.is_integer():
             raise ValueError("insufficient or invalid company count")
-        candidate_rev=finite(p["revision_60d_pct"]); candidate_bench=finite(p["seasonal_benchmark_60d"])
-        rev,bench=candidate_rev,candidate_bench; es_asof=p["as_of"]
+        candidate_rev=finite(p["revision_60d_pct"])
+        rev=candidate_rev; es_asof=p["as_of"]
         coverage=candidate_coverage; companies=int(candidate_companies)
         breadth=p.get("analyst_revision_breadth_30d"); posweight=p.get("positive_company_weight_60d")
-        baseline_mode=p.get("baseline_mode"); earn_mode="AUTO_PROXY"; earnings_status="CURRENT"
+        earn_mode="AUTO_PROXY"; earnings_status="CURRENT"
     except (OSError,ValueError,TypeError,KeyError) as ex:
         WARNINGS.append("Proxy rejected: "+str(ex))
 if earnings_status!="CURRENT": WARNINGS.append("Earnings input: "+earnings_status)
-surprise=rounded(rev-bench) if earnings_status=="CURRENT" else None
+surprise=None  # Retained as null for older readers; seasonal adjustment is disabled.
 vs=vstate(gap) if pe_status=="CURRENT" and rates_status=="CURRENT" else "UNAVAILABLE"
 ds=dstate(r1,r3,tp1 if tpq=="AUTO" else None) if rates_status=="CURRENT" else "UNAVAILABLE"
-es=estate(surprise) if surprise is not None else "UNAVAILABLE"
+es="UNRATED" if earnings_status=="CURRENT" else "UNAVAILABLE"
 rg=regime(vs,ds,es)
 
-data={"version":"0.2.3","generated_at":datetime.now().astimezone().isoformat(),"rate_sources":{s:f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={s}" for s in dfs},"as_of":asof.date().isoformat(),"regime":rg,
+data={"version":"0.2.4","generated_at":datetime.now().astimezone().isoformat(),"rate_sources":{s:f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={s}" for s in dfs},"as_of":asof.date().isoformat(),"regime":rg,
 "regime_note":f"{vs} valuation vulnerability + {ds} discount-rate shock + {es} earnings confirmation.",
 "pillars":{
  "valuation":{"label":"Valuation Vulnerability","state":vs,"equity_yield_gap":gap,"forward_earnings_yield":round(ey,2),"forward_pe":pe,"as_of":pe_input.get("as_of"),"source":pe_input["source"],"source_url":pe_input.get("source_url"),"date_type":pe_input.get("date_type","INPUT_DATE"),"real10y":round(real,2)},
  "discount":{"label":"Discount-Rate Shock","state":ds,"real10y":round(real,2),"real_1m_change_bp":r1,"real_3m_change_bp":r3,"term_premium":tp,"term_premium_1m_change_bp":tp1,"term_premium_as_of":tpdate,"term_premium_quality":tpq,"term_premium_source":"https://fred.stlouisfed.org/series/THREEFYTP10","breakeven10y":round(bei,2)},
- "earnings":{"label":"Earnings Confirmation","state":es,"source_mode":earn_mode,"revision_60d":rounded(rev),"seasonal_benchmark_60d":rounded(bench),"revision_surprise":surprise,"baseline_mode":baseline_mode,"coverage_weight":coverage,"companies_used":companies,"quality":earnings_status,"analyst_revision_breadth":breadth,"positive_company_weight":posweight,"as_of":es_asof}},
+ "earnings":{"label":"Earnings Confirmation","state":es,"source_mode":earn_mode,"revision_60d":rounded(rev),"seasonal_benchmark_60d":None,"revision_surprise":surprise,"baseline_mode":baseline_mode,"coverage_weight":coverage,"companies_used":companies,"quality":earnings_status,"analyst_revision_breadth":breadth,"positive_company_weight":posweight,"as_of":es_asof}},
 "context":{"nominal10y":round(nom,2),"ai_credit_premium_bp":float(MANUAL["ai_credit_premium_bp"]["value"])},
 "data_quality":{"rates":"AUTO" if rates_status=="CURRENT" else rates_status,"term_premium":tpq,"forward_pe":pe_input.get("source_mode","MANUAL") if pe_status=="CURRENT" else pe_status,"earnings":earnings_status,"earnings_source":earn_mode,"ai_credit":"MANUAL","warnings":WARNINGS}}
 LATEST.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding="utf-8")
 hist=json.loads(HISTORY.read_text(encoding="utf-8"))
-hist=[row for row in hist if row.get("as_of")!=data["as_of"]]
+hist=[row for row in hist if (row.get("as_of"),row.get("version"))!=(data["as_of"],data["version"])]
 hist.append(data)
 hist.sort(key=lambda row:row["as_of"])
 HISTORY.write_text(json.dumps(hist[-730:],ensure_ascii=False,indent=2),encoding="utf-8")

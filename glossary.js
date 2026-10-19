@@ -1,23 +1,23 @@
 const glossary={
   "equityyield": {
-  "aliases": [
-    "Equity yield (forward)"
-  ],
-  "title": {
-    "en": "Equity yield (forward)",
-    "ko": "주식 이익수익률 (선행)"
-  },
-  "lines": {
-    "en": [
-      "Expected earnings relative to price, calculated as 100 / forward P/E (%); this is not a dividend yield or a forecast of total return.",
-      "Subtracting the 10-year real Treasury yield gives the equity yield gap. The source and reference date are inherited from the forward P/E input."
+    "aliases": [
+      "Equity yield (forward)"
     ],
-    "ko": [
-      "주가 대비 예상 이익으로, 100 / 선행 PER(%)로 계산합니다. 배당수익률이나 총수익률 전망을 뜻하지 않습니다.",
-      "여기서 10년 실질국채금리를 빼면 주식 이익수익률 격차가 됩니다. 출처와 기준일은 선행 PER 입력값을 따릅니다."
-    ]
-  }
-},
+    "title": {
+      "en": "Equity yield (forward)",
+      "ko": "주식 이익수익률 (선행)"
+    },
+    "lines": {
+      "en": [
+        "Expected earnings relative to price, calculated as 100 / forward P/E (%); this is not a dividend yield or a forecast of total return.",
+        "Subtracting the 10-year real Treasury yield gives the equity yield gap. The source and reference date are inherited from the forward P/E input."
+      ],
+      "ko": [
+        "주가 대비 예상 이익으로, 100 / 선행 PER(%)로 계산합니다. 배당수익률이나 총수익률 전망을 뜻하지 않습니다.",
+        "여기서 10년 실질국채금리를 빼면 주식 이익수익률 격차가 됩니다. 출처와 기준일은 선행 PER 입력값을 따릅니다."
+      ]
+    }
+  },
   "regime": {
     "aliases": [
       "CURRENT REGIME",
@@ -86,12 +86,12 @@ const glossary={
     },
     "lines": {
       "en": [
-        "Assesses whether changes in earnings expectations may offset discount-rate pressure.",
-        "The classification uses revision relative to a provisional seasonal benchmark, whose definition remains under research."
+        "Shows raw 60-day EPS estimate revisions and revision breadth.",
+        "No seasonal adjustment is applied. Earnings ratings are withheld until an appropriate method is validated."
       ],
       "ko": [
-        "기업이익 전망 변화가 할인율 부담을 상쇄할 수 있는지 살펴봅니다.",
-        "잠정 계절 기준 대비 수정률로 분류하며, 계절 기준의 정의는 추가 연구 중입니다."
+        "원래 60일 EPS 추정치 수정률과 상향·하향 수정의 확산 정도를 보여줍니다.",
+        "계절 보정은 적용하지 않으며, 적절한 방법이 검증될 때까지 이익 등급을 보류합니다."
       ]
     }
   },
@@ -311,7 +311,8 @@ const glossary={
   },
   "breadth": {
     "aliases": [
-      "Analyst breadth"
+      "Analyst breadth",
+      "Analyst breadth (30D)"
     ],
     "title": {
       "en": "Analyst revision breadth",
@@ -517,17 +518,36 @@ const glossary={
   "surprise": {
     "aliases": [],
     "title": {
-      "en": "EPS revision surprise",
-      "ko": "EPS 수정 서프라이즈"
+      "en": "60-day EPS revision",
+      "ko": "60일 EPS 수정률"
     },
     "lines": {
       "en": [
-        "The 60-day EPS revision minus the provisional seasonal baseline, expressed in percentage points.",
-        "A positive result is stronger than that benchmark, but the benchmark’s comparability with this proxy remains under research."
+        "Weighted change in EPS estimates over 60 days, without seasonal adjustment.",
+        "This measures estimate revisions, not realized earnings growth or an earnings rating."
       ],
       "ko": [
-        "60일 EPS 수정률에서 잠정 계절 기준을 뺀 값이며, 단위는 %p입니다.",
-        "양수는 해당 기준보다 강하다는 뜻이지만, 프록시와 계절 기준의 비교 가능성은 연구 중입니다."
+        "60일간 EPS 추정치 변화의 가중평균이며 계절 보정은 없습니다.",
+        "실현 이익 성장률이나 이익 등급이 아닌 추정치 수정률입니다."
+      ]
+    }
+  },
+  "positiveweight": {
+    "aliases": [
+      "Upward-revised company weight (60D)"
+    ],
+    "title": {
+      "en": "Upward-revised company weight",
+      "ko": "이익 상향 기업 비중"
+    },
+    "lines": {
+      "en": [
+        "Share of covered SPY weight in companies with positive 60-day EPS revisions.",
+        "The denominator is covered holdings, not the entire S&P 500. This differs from analyst revision-count breadth."
+      ],
+      "ko": [
+        "60일 EPS 수정률이 양수인 기업의 비중을 수집 대상 SPY 비중 안에서 계산합니다.",
+        "전체 S&P500 비중이 아니며, 애널리스트 상향·하향 건수 기반 지표와 다릅니다."
       ]
     }
   }

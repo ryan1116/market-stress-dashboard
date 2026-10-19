@@ -9,3 +9,5 @@
 - proxy와 FactSet 방향·크기·전환점을 병렬 비교한다.
 
 운영 처리: 기존 -1.7%는 잠정 benchmark로만 유지하며 검증된 계절조정이라고 부르지 않는다. 연구 완료 전 52개 관측치 기반 empirical baseline 자동 전환은 비활성화한다. 재활성화하려면 config/eps_proxy_config.json의 enable_empirical_baseline을 명시적으로 변경해야 한다.
+
+2026-10-19 승인 변경: −1.7% 계절 보정을 실제 계산과 판정에서 제거. 원래 60일 수정률과 확산도를 표시하고 이익 등급은 UNRATED, 종합 판정은 UNDETERMINED로 보류. 기존 서프라이즈 임계값을 원시 수정률에 재사용하지 않음. 이전 기록은 보존하며 재도입은 별도 검증 후 결정.

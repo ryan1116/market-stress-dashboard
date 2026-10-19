@@ -1,3 +1,7 @@
+# Current methodology — v0.2.4 (2026-10-19)
+
+Seasonal adjustment is disabled. The earnings card shows raw 60-day revisions, upward-revised company weight and 30-day analyst breadth. Valid earnings data are UNRATED; the combined regime remains UNDETERMINED pending validated earnings thresholds. Null legacy baseline/surprise fields are retained for compatibility. Earlier history and the original whitepaper are historical records, not the active model.
+
 # Market Stress Dashboard Web v0.2.3
 
 Repository: https://github.com/ryan1116/market-stress-dashboard
@@ -7,7 +11,7 @@ Repository: https://github.com/ryan1116/market-stress-dashboard
 - Term premium now uses FRED THREEFYTP10 (Kim–Wright), instead of parsing the blocked Fed HTML table.
 - The observed value, its own observation date, and quality are displayed. Its 30-day change is anchored to that observation date. Under the existing 7-day freshness policy, stale term premium remains visible but does not contribute to shock classification.
 - Live retrieval on 2026-09-28: 2026-09-18 value 0.9595%, 30-day change +12.2 bp, quality STALE. Rates remain current and the earnings fallback remains stale, producing UNDETERMINED.
-- Seasonal definition is a separate research backlog, not a blocker for data collection or deployment preparation. The provisional benchmark remains labeled; automatic empirical-baseline switching is disabled pending research.
+- Seasonal definition is a separate research backlog, not a blocker for data collection or deployment preparation. Seasonal adjustment is disabled; no earnings rating is inferred.
 - 29 offline regression checks passed. EPS live API access, GitHub scheduled execution and visual browser rendering remain unverified.
 
 ## Forward P/E refresh (2026-10-14)

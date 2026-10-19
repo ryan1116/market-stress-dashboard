@@ -28,7 +28,7 @@ function koreanInterpretation(d){
   v.state==='UNAVAILABLE'?'필수 입력이 없거나 오래되어 밸류에이션을 신뢰성 있게 평가할 수 없습니다.':`주식 이익수익률과 실질금리의 격차는 ${number(v.equity_yield_gap)}%p로, ${cushions[v.state]||'확인이 필요한'} 상태입니다.`,
   x.state==='UNAVAILABLE'?'유효한 금리 데이터가 없어 할인율 부담을 평가할 수 없습니다.':`실질금리는 1개월간 ${signed(x.real_1m_change_bp)}bp, 3개월간 ${signed(x.real_3m_change_bp)}bp 변했으며, 할인율 부담은 ‘${pressure[x.state]||'미확인'}’입니다.${x.term_premium_quality!=='AUTO'?' 기간 프리미엄은 판정에서 제외됩니다.':''}`,
   e.state==='UNAVAILABLE'?'추정치 데이터가 유효기간 또는 품질 기준을 충족하지 않아 이익 방어력 확인을 보류합니다.':e.source_mode==='AUTO_PROXY'?`이익 프록시의 60일 수정률은 ${signed(e.revision_60d,2)}%이며, ${e.companies_used??'미확인'}개 기업·SPY 비중 ${number(e.coverage_weight==null?null:e.coverage_weight*100,1)}%를 반영합니다.`:`수동 이익 대체값의 수정률은 ${signed(e.revision_60d,2)}%이며, 입력 기준일은 ${e.as_of||'미기록'}입니다.`,
-  (implications[d.regime]||'개별 지표를 확인한 뒤 판단해야 합니다.')+(d.regime==='UNDETERMINED'?'':' 계절 기준은 아직 잠정값입니다.')
+  e.state==='UNRATED'?'계절 보정 없이 원래 EPS 수정률을 표시합니다. 이익 등급과 종합 판정은 검증 전까지 보류합니다.':(implications[d.regime]||'개별 지표를 확인한 뒤 판단해야 합니다.')
  ];
 }
 function renderRegimeScale(){
@@ -70,11 +70,11 @@ window.applyLanguage=function(){
   const lines=ko?koreanInterpretation(d):interpretationLines(d);
   document.getElementById('note').replaceChildren(...lines.map(text=>{const span=document.createElement('span');span.className='interpretation-line';span.textContent=text;return span;}));
   document.getElementById('asof').textContent=(ko?'시장 데이터 기준일: ':'Market data as of ')+d.as_of;
-  document.getElementById('generated').textContent=ko?`스냅샷 생성: ${d.generated_at||'미기록'}. 주식 이익수익률 격차는 위의 PER 입력일과 실질금리 관측일을 함께 사용합니다. 이익 수정 서프라이즈는 EPS 입력과 잠정 계절 기준을 사용하며 별도의 원자료 기준일은 없습니다.`:`Snapshot generated: ${d.generated_at||'Not recorded'}. Equity yield gap combines the P/E input date and real-yield observation date shown above. Revision surprise uses the EPS input and provisional baseline; it has no independent source date.`;
+  document.getElementById('generated').textContent=ko?`스냅샷 생성: ${d.generated_at||'미기록'}. 주식 이익수익률 격차는 위의 PER 입력일과 실질금리 관측일을 함께 사용합니다. EPS 수정률은 계절 보정 없이 표시합니다.`:`Snapshot generated: ${d.generated_at||'Not recorded'}. Equity yield gap combines the P/E input date and real-yield observation date shown above. EPS revisions are unadjusted; no seasonal benchmark is used.`;
   document.getElementById('quality').textContent=qualitySummary(d,language);
  }else if(window.dashboardError){document.getElementById('note').textContent=ko?'데이터를 불러오지 못해 시장 국면 판정을 보류합니다.':'The regime is unavailable because dashboard data could not be loaded.';}
  if(window.installTermHelp) window.installTermHelp();
 };
 document.querySelectorAll('[data-language]').forEach(button=>button.addEventListener('click',()=>{language=button.dataset.language;const url=new URL(location.href);url.searchParams.set('lang',language);history.replaceState(null,'',url);window.applyLanguage();}));
 window.applyLanguage();
-fetch('translations.json?v=8').then(response=>{if(!response.ok)throw Error('Translation request failed');return response.json();}).then(data=>{translations=data;window.applyLanguage();}).catch(()=>{language='en';document.querySelector('[data-language="ko"]').disabled=true;window.applyLanguage();});
+fetch('translations.json?v=9').then(response=>{if(!response.ok)throw Error('Translation request failed');return response.json();}).then(data=>{translations=data;window.applyLanguage();}).catch(()=>{language='en';document.querySelector('[data-language="ko"]').disabled=true;window.applyLanguage();});

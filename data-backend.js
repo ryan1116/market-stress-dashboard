@@ -38,7 +38,7 @@ function sheetPayload(text,now=Date.now()) {
  if(!['GREEN','YELLOW','YELLOW-ORANGE','ORANGE','RED','UNDETERMINED'].includes(d.regime))throw Error('Invalid regime');
  for(const key of ['valuation','discount','earnings']){
   const p=d.pillars[key];
-  if(!p||typeof p.label!=='string'||!['HIGH','ELEVATED','LOW','MODERATE','EASING','STRONG','NEUTRAL','WEAKENING','NEGATIVE','UNAVAILABLE'].includes(p.state))throw Error('Invalid pillar');
+  if(!p||typeof p.label!=='string'||!['HIGH','ELEVATED','LOW','MODERATE','EASING','STRONG','NEUTRAL','WEAKENING','NEGATIVE','UNRATED','UNAVAILABLE'].includes(p.state))throw Error('Invalid pillar');
  }
  for(const key of ['forward_pe','eps_fallback','ai_credit_premium_bp'])if(!m[key]||typeof m[key].source!=='string')throw Error('Missing source metadata');
  const stamp=Date.parse(d.generated_at);

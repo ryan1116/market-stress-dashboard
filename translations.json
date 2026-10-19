@@ -79,5 +79,9 @@
   "Equity yield (forward)": "주식 이익수익률 (선행)",
   "P/E / equity yield as of": "PER · 이익수익률 기준일",
   "Report publication date; underlying price observation date not independently recorded. Earnings yield = 100 / P/E.": "보고서 발행일 · 산출에 사용한 주가 관측일은 별도 미기록. 이익수익률 = 100 / PER.",
-  "Historical reference only; a comparable updated observation has not been verified. Not used in the regime.": "과거 참고값입니다. 동일한 정의의 최신 관측값은 미확인 상태이며, 시장 국면 판정에 사용하지 않습니다."
+  "Historical reference only; a comparable updated observation has not been verified. Not used in the regime.": "과거 참고값입니다. 동일한 정의의 최신 관측값은 미확인 상태이며, 시장 국면 판정에 사용하지 않습니다.",
+  "UNRATED": "등급 보류",
+  "Upward-revised company weight (60D)": "이익 상향 기업 비중 (60일)",
+  "Analyst breadth (30D)": "애널리스트 수정 확산도 (30일)",
+  "Thresholds and freshness limits are operating hypotheses, not validated trading rules. The proxy requires at least 30% SPY weight coverage and 10 companies. Proxy inputs expire after 10 days; fallback inputs expire after 14 days. The regime is undetermined when core inputs are invalid. EPS revision is 100 × (current − prior) / |prior|; zero prior EPS is excluded. Seasonal adjustment is disabled. Raw revisions and revision breadth are descriptive observations; earnings ratings and the combined regime are withheld pending validation.": "임계값과 유효기간은 검증된 매매 규칙이 아닌 운영 가정입니다. 프록시는 SPY 비중 30% 이상과 10개 기업 이상을 요구합니다. 프록시는 10일, 대체 자료는 14일 후 만료됩니다. EPS 수정률은 100 × (현재 − 과거) / |과거|이며 과거 EPS가 0이면 제외합니다. 계절 보정은 사용하지 않습니다. 수정률과 확산도는 관측값이며, 이익 등급과 종합 판정은 검증 전까지 보류합니다."
 }
