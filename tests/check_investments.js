@@ -1,0 +1,4 @@
+const assert=require('node:assert/strict');const fs=require('node:fs');const {validateSnapshot,gap}=require('../investments.js');const d=JSON.parse(fs.readFileSync(__dirname+'/../data/investments/inbody.json'));
+assert.equal(validateSnapshot(d),d);assert(Math.abs(d.weighted_value-d.scenarios.reduce((n,s)=>n+s.value*s.weight,0))<.01);assert.equal(gap(100,0),null);assert.equal(gap(100,50),1);
+for(const change of [x=>x.scenarios[0].weight=.5,x=>x.scenarios[1].value=null,x=>x.weighted_value+=1,x=>x.scenarios[0].terminal_growth=x.assumptions.wacc,x=>x.scenarios[0].growth.pop(),x=>x.assumptions.wacc=null,x=>x.model_as_of='2026-02-30']){const x=structuredClone(d);change(x);assert.throws(()=>validateSnapshot(x));}
+console.log('PASS: snapshot, weighting, missing data, WACC/g and forecast horizon');

@@ -122,3 +122,11 @@ These are collector-owned output tabs, not manual input forms. Collection replac
 Connection verified on 2026-10-14: sheet synchronization is enabled and the frontend uses `google_sheets` mode. For a new setup, keep `mode` as `repository` until steps 1–5 are verified. No automatic fallback is used once sheet mode is enabled: inaccessible, malformed or more-than-four-day-old snapshots produce the existing unavailable state instead of silently showing another source. Rollback is explicit: set `mode` back to `repository`.
 
 Checks: `python3 scripts/sync_sheets.py --dry-run`, `python3 tests/check_sheets.py`, `python3 tests/run_checks.py`.
+
+## Investment review page (2026-10-19)
+
+`investments.html` adds a Korean company review page using the existing terminal design. InBody is the first reviewed company. Google Sheets remains the editable valuation source; the website displays an explicitly dated public snapshot, not real-time sync. Scenario values, assumptions, forecast path, review questions, limitations and append-only decisions are shown. The price comparator is browser-only and never edits the model.
+
+See `INVESTMENT_REVIEW.md` for the daily Codex heartbeat and quarterly filing review procedure. `scripts/update_investment.py` accepts an authenticated connector CellData export, validates the public allowlist, and records review history. No credentials or private raw exports are committed. Existing market collectors and schedules remain intact.
+
+Checks: `node tests/check_investments.js`, `python3 tests/run_checks.py`. Disclosure and valuation dates are not advanced merely because collection ran.
