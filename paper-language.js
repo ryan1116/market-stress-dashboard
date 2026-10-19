@@ -5,7 +5,7 @@ function setPaperLanguage(language,focus=false){
  const ko=language==='ko';
  paperMain.innerHTML=ko?paperKorean:paperEnglish;
  document.documentElement.lang=ko?'ko':'en';
- document.title=ko?'화이트페이퍼 | Market Stress Dashboard':'Whitepaper | Market Stress Dashboard';
+ document.title=ko?'시장 방법론 | Charlie CIO':'Market Methodology | Charlie CIO';
  paperMain.querySelectorAll('[data-paper-language]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.paperLanguage===language)));
  paperMain.querySelectorAll('a[href="./"]').forEach(link=>link.href='./?lang='+language);
  if(focus)paperMain.querySelector(`[data-paper-language="${language}"]`).focus();

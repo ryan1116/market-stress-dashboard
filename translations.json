@@ -96,5 +96,8 @@
   "Raw 60-day EPS revision, upward-revised company weight within covered holdings, and 30-day analyst breadth: (upward revisions − downward revisions) / (upward revisions + downward revisions).": "계절 보정 없는 60일 EPS 수정률, 수집 대상 내 이익 상향 기업 비중, 30일 애널리스트 수정 확산도를 표시합니다. 확산도 = (상향 건수 − 하향 건수) / (상향 건수 + 하향 건수)입니다.",
   "UNRATED: no HIGH / LOW or STRONG / WEAK thresholds are currently applied. Seasonal adjustment is disabled. Positive revisions or breadth indicate upward changes, not a validated earnings-strength rating.": "등급 보류: 현재 높음·낮음 또는 강함·약함 임계값을 적용하지 않습니다. 계절 보정은 중단했습니다. 수정률·확산도의 양수는 상향 방향을 뜻할 뿐, 검증된 이익 방어력 등급은 아닙니다.",
   "Data eligibility: rates ≤ 7 days old; forward P/E ≤ 14 days old; EPS proxy ≤ 10 days old with at least 30% SPY coverage and 10 companies; manual earnings fallback ≤ 14 days old. Missing or invalid required inputs mean UNAVAILABLE, never LOW. The combined regime remains UNDETERMINED while earnings are UNRATED.": "자료 요건: 금리 7일 이내, 선행 PER 14일 이내, EPS 프록시 10일 이내이며 SPY 비중 30% 이상·10개 기업 이상입니다. 수동 이익 대체 자료는 14일 이내여야 합니다. 필수 자료가 없거나 유효하지 않으면 낮음이 아닌 확인 불가입니다. 이익 등급을 보류하는 동안 종합 시장 국면도 판정을 보류합니다.",
-  "Pillar": "평가 축"
+  "Pillar": "평가 축",
+  "Market Review": "시장 점검",
+  "Investment Review": "종목 점검",
+  "Methodology": "방법론"
 }

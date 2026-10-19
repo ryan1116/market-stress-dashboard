@@ -54,6 +54,8 @@ function renderRegimeScale(){
 }
 window.applyLanguage=function(){
  const ko=language==='ko';document.documentElement.lang=language;
+ document.title=(ko?'시장 점검':'Market Review')+' | Charlie CIO';
+ document.querySelector('.terminal-nav a').href='./?lang='+language;
  document.querySelectorAll('a[href^="whitepaper.html"]').forEach(link=>link.href='whitepaper.html?lang='+language);
  const root=document.querySelector('.wrap');
  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
@@ -77,4 +79,4 @@ window.applyLanguage=function(){
 };
 document.querySelectorAll('[data-language]').forEach(button=>button.addEventListener('click',()=>{language=button.dataset.language;const url=new URL(location.href);url.searchParams.set('lang',language);history.replaceState(null,'',url);window.applyLanguage();}));
 window.applyLanguage();
-fetch('translations.json?v=10').then(response=>{if(!response.ok)throw Error('Translation request failed');return response.json();}).then(data=>{translations=data;window.applyLanguage();}).catch(()=>{language='en';document.querySelector('[data-language="ko"]').disabled=true;window.applyLanguage();});
+fetch('translations.json?v=11').then(response=>{if(!response.ok)throw Error('Translation request failed');return response.json();}).then(data=>{translations=data;window.applyLanguage();}).catch(()=>{language='en';document.querySelector('[data-language="ko"]').disabled=true;window.applyLanguage();});
