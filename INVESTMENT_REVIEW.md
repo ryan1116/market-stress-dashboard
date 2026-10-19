@@ -42,3 +42,9 @@ node tests/check_investments.js
 판단 사항: β0.9/Kd5%/ERP5%/세율22%/운영현금200억원은 사용자 결정. 금융자산0%·NCI 장부가·순부채 변동0은 잠정적 처리. 공개 페이지에 한계 표시. 신규 사용권 무시는 인바디의 사용자 결정으로만 기록한다.
 
 가장 큰 미결: 높은 장기 성장의 매출 규모·재투자 뒷받침, 금융상품 사용제한과 비상장 투자 회수, 반기 이후 순부채 변동. 숫자가 계산됐다고 이 검증이 끝난 것은 아니다.
+
+## 최근 6개월 공시 목록 갱신
+
+매일 위 일일 점검에서 공시 조회를 수행할 때 `data/investments/disclosures.json`도 갱신한다. DART get_disclosure_list에 corp_code=00269922, bgn_de=실제 조회일에서 6개월 전 같은 날짜(월말 보정), end_de=실제 조회일, last_reprt_at=N, page_count=100을 사용한다. 모든 페이지를 모으고 total_count/total_page를 대사한다. 커넥터 page_no는 5자리 문자열 검증이 있으므로 첫 페이지는 생략하고, 이후 필요하면 00002처럼 보낸다. 원본 및 정정본 모두 남긴다.
+
+응답 JSON들을 배열로 저장한 뒤 `python3 scripts/update_disclosures.py --pages /absolute/private/dart-pages.json --as-of YYYY-MM-DD` 실행. 실패 시 기존 목록과 조회일을 유지하고 실패를 기록한다. 종목 JSON 2개와 함께 disclosures.json도 데이터 커밋 대상이다. 이 조회일은 재무 모델 검토일과 별개다.

@@ -20,6 +20,16 @@ if(typeof document!=='undefined'){
  const money=n=>Math.round(n).toLocaleString('ko-KR')+'원',pct=n=>(n*100).toFixed(1)+'%',escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const put=(id,html)=>document.getElementById(id).innerHTML=html;
  const safeURL=s=>{const u=new URL(s);if(u.protocol!=='https:')throw Error('출처 링크 오류');return u.href;};
+ async function loadDisclosures(){
+  try{
+   const res=await fetch('data/investments/disclosures.json',{cache:'no-store'});if(!res.ok)throw Error('공시 자료를 불러오지 못했습니다');
+   const d=await res.json();if(d.corp_code!=='00269922'||!Array.isArray(d.items)||d.total!==d.items.length)throw Error('공시 목록 검증 실패');
+   const today=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'});
+   document.getElementById('disclosures-status').textContent=`${d.from} ~ ${d.to} · 총 ${d.total}건 · DART 조회 ${d.as_of}${d.as_of<today?' · 최신 조회일 이후 공시는 미반영':''}`;
+   put('disclosures',d.items.length?d.items.map(r=>`<tr><td>${escape(r.date)}</td><td><a href="${escape(safeURL(r.url))}" target="_blank" rel="noopener">${escape(r.title)} ↗</a></td><td>${escape(r.filer)}</td><td>${escape(r.remarks.includes('정')?'정정 공시 존재':r.title.includes('정정')?'정정 보고서':'—')}</td></tr>`).join(''):'<tr><td colspan="4">조회 기간 내 공시 없음</td></tr>');
+  }catch(e){document.getElementById('disclosures-status').textContent='공시 표시 중단 · '+e.message;put('disclosures','');}
+ }
+ loadDisclosures();
  async function start(){
   const res=await fetch('data/investments/inbody.json',{cache:'no-store'});if(!res.ok)throw Error('자료를 불러올 수 없음');const d=validateSnapshot(await res.json());
   const today=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'}),age=(Date.parse(today)-Date.parse(d.price.as_of))/86400000;
