@@ -83,8 +83,6 @@ loadDashboardData().then(([d,manual])=>{
   ["10Y term premium · 1M change", "FRED · THREEFYTP10 (Kim–Wright)", "https://fred.stlouisfed.org/series/THREEFYTP10", x.term_premium_as_of, "Observation date · "+qualityLabel(x.term_premium_quality)],
   ["Forward P/E · earnings yield", v.source||manual.forward_pe.source, v.source_url||null, v.as_of||manual.forward_pe.as_of, v.date_type==="REPORT_DATE"?"Report publication date; underlying price observation date not independently recorded. Earnings yield = 100 / P/E.":"Manual input date; original report URL not recorded. Earnings yield = 100 / P/E."],
   ["EPS revisions · analyst breadth · SPY coverage", automatic?"Alpha Vantage · ETF_PROFILE / EARNINGS_ESTIMATES":manual.eps_fallback.source, automatic?"https://www.alphavantage.co/documentation/":null, e.as_of, automatic?"Collection date; individual provider update times are unavailable":"Manual fallback input date; original report URL not recorded"],
-  ["Seasonal baseline (provisional)", e.baseline_mode==="EMPIRICAL_SAME_MONTH_MEDIAN"?"Stored proxy history": "FactSet benchmark · manual configuration", null, null, "Benchmark reference date not recorded; seasonal definition is under research"],
-  ["AI credit premium (context)", manual.ai_credit_premium_bp.source, null, manual.ai_credit_premium_bp.as_of, "Historical reference only; a comparable updated observation has not been verified. Not used in the regime."]
  ];
  const tbody=document.getElementById("sources");
  rows.forEach(([metric,source,url,date,note])=>{
