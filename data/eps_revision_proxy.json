@@ -8,9 +8,9 @@
   "revision_30d_pct": 1.066,
   "revision_60d_pct": 1.437,
   "revision_90d_pct": 2.586,
-  "seasonal_benchmark_60d": -1.7,
-  "baseline_mode": "PROVISIONAL_CONFIG",
-  "revision_surprise_60d": 3.137,
+  "seasonal_benchmark_60d": null,
+  "baseline_mode": "DISABLED",
+  "revision_surprise_60d": null,
   "analyst_revision_breadth_30d": 0.336,
   "positive_company_weight_60d": 0.844,
   "constituents": [

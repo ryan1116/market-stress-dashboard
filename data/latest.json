@@ -1,14 +1,14 @@
 {
-  "version": "0.2.3",
-  "generated_at": "2026-10-19T01:15:51.423151+00:00",
+  "version": "0.2.4",
+  "generated_at": "2026-10-19T08:37:32.793336+00:00",
   "rate_sources": {
     "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
     "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
     "T10YIE": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE"
   },
   "as_of": "2026-10-15",
-  "regime": "YELLOW",
-  "regime_note": "HIGH valuation vulnerability + MODERATE discount-rate shock + STRONG earnings confirmation.",
+  "regime": "UNDETERMINED",
+  "regime_note": "HIGH valuation vulnerability + MODERATE discount-rate shock + UNRATED earnings confirmation.",
   "pillars": {
     "valuation": {
       "label": "Valuation Vulnerability",
@@ -37,12 +37,12 @@
     },
     "earnings": {
       "label": "Earnings Confirmation",
-      "state": "STRONG",
+      "state": "UNRATED",
       "source_mode": "AUTO_PROXY",
       "revision_60d": 1.44,
-      "seasonal_benchmark_60d": -1.7,
-      "revision_surprise": 3.14,
-      "baseline_mode": "PROVISIONAL_CONFIG",
+      "seasonal_benchmark_60d": null,
+      "revision_surprise": null,
+      "baseline_mode": "DISABLED",
       "coverage_weight": 0.4147,
       "companies_used": 20,
       "quality": "CURRENT",
