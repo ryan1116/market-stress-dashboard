@@ -1,37 +1,37 @@
 {
   "version": "0.2.4",
-  "generated_at": "2026-10-20T01:10:02.381075+00:00",
+  "generated_at": "2026-10-21T00:48:18.500008+00:00",
   "rate_sources": {
     "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
     "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
     "T10YIE": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE"
   },
-  "as_of": "2026-10-16",
+  "as_of": "2026-10-19",
   "regime": "UNDETERMINED",
-  "regime_note": "ELEVATED valuation vulnerability + MODERATE discount-rate shock + UNRATED earnings confirmation.",
+  "regime_note": "HIGH valuation vulnerability + MODERATE discount-rate shock + UNRATED earnings confirmation.",
   "pillars": {
     "valuation": {
       "label": "Valuation Vulnerability",
-      "state": "ELEVATED",
-      "equity_yield_gap": 2.52,
+      "state": "HIGH",
+      "equity_yield_gap": 2.46,
       "forward_earnings_yield": 5.26,
       "forward_pe": 19.0,
       "as_of": "2026-10-16",
       "source": "FactSet Earnings Insight",
       "source_url": "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_101626.pdf",
       "date_type": "REPORT_DATE",
-      "real10y": 2.74
+      "real10y": 2.8
     },
     "discount": {
       "label": "Discount-Rate Shock",
       "state": "MODERATE",
-      "real10y": 2.74,
-      "real_1m_change_bp": 6.0,
+      "real10y": 2.8,
+      "real_1m_change_bp": 12.0,
       "real_3m_change_bp": 43.0,
-      "term_premium": 1.0729,
-      "term_premium_1m_change_bp": 17.3,
-      "term_premium_as_of": "2026-10-09",
-      "term_premium_quality": "STALE",
+      "term_premium": 0.9857,
+      "term_premium_1m_change_bp": 1.4,
+      "term_premium_as_of": "2026-10-16",
+      "term_premium_quality": "AUTO",
       "term_premium_source": "https://fred.stlouisfed.org/series/THREEFYTP10",
       "breakeven10y": 2.35
     },
@@ -52,18 +52,16 @@
     }
   },
   "context": {
-    "nominal10y": 5.09,
+    "nominal10y": 5.15,
     "ai_credit_premium_bp": 37.0
   },
   "data_quality": {
     "rates": "AUTO",
-    "term_premium": "STALE",
+    "term_premium": "AUTO",
     "forward_pe": "AUTO",
     "earnings": "CURRENT",
     "earnings_source": "AUTO_PROXY",
     "ai_credit": "MANUAL",
-    "warnings": [
-      "Term premium stale: displayed for reference, excluded from shock signal"
-    ]
+    "warnings": []
   }
 }
