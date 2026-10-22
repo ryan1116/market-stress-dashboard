@@ -4,17 +4,17 @@
   "name": "인바디",
   "currency": "KRW",
   "model_as_of": "2026-10-19",
-  "reviewed_at": "2026-10-19",
+  "reviewed_at": "2026-10-22",
   "price": {
-    "value": 51400,
-    "as_of": "2026-10-19",
-    "source": "기준 시트 INPUT · StockNow 일봉 (KRX 직접 대조 미실시)"
+    "value": 47850,
+    "as_of": "2026-10-22",
+    "source": "네이버 일봉 · KRX 직접 대조 미실시"
   },
   "sheet_url": "https://docs.google.com/spreadsheets/d/1I12SpCHfUCVwvdgnbmYZl9CESKvBEHIHbbF9xQsqvvI/edit",
   "scenarios": [
     {
       "name": "Low",
-      "value": 63934.70122532184,
+      "value": 63977.92627186365,
       "weight": 0.3,
       "growth": [
         0.24115459968275196,
@@ -44,7 +44,7 @@
     },
     {
       "name": "Normal",
-      "value": 92009.99968495771,
+      "value": 92076.57351203419,
       "weight": 0.4,
       "growth": [
         0.26794955520305774,
@@ -74,7 +74,7 @@
     },
     {
       "name": "High",
-      "value": 158875.71145622616,
+      "value": 159008.92523519305,
       "weight": 0.3,
       "growth": [
         0.29474451072336355,
@@ -103,9 +103,9 @@
       ]
     }
   ],
-  "weighted_value": 103647.12367844747,
+  "weighted_value": 103726.68485693069,
   "assumptions": {
-    "wacc": 0.08649547070492389,
+    "wacc": 0.08645483965698883,
     "tax": 0.22,
     "opening_wc": 55577952000,
     "wc_ratio": 0.23756509455157246,
@@ -153,8 +153,8 @@
     98224468986.11043
   ],
   "review": {
-    "status": "기준 수립 · 후속 일일 점검 대기",
-    "decision": "가격 변동만으로 성장률·마진을 바꾸지 않는다. 신규 공시와 사업 증거로 변경을 제안한다.",
+    "status": "주가·DART 점검 완료 · IR 일부 미확인",
+    "decision": "가격 변화로 WACC 가중치만 재계산. 경제적 가정 변경 근거 없음. IR 동적 경영정보 미확인 유지.",
     "triggers": [
       {
         "item": "성장 경로",
@@ -193,7 +193,8 @@
     "평가일은 2026-10-19. 첫해 FCFF 잔여 20% 일할 근사이며, 반기 이후 순부채 변동은 0 가정.",
     "금융·투자자산 제외는 무가치 판정이 아니다. 비지배지분은 장부가 1배 임시 적용.",
     "신규 사용권자산은 사용자 결정으로 무시. 상각·리스부채와의 불일치가 가치에 영향을 줄 수 있다.",
-    "신규 뉴스·공시를 매일 검토했다는 뜻이 아니다. 검토일과 자료 기준일을 확인한다."
+    "신규 뉴스·공시를 매일 검토했다는 뜻이 아니다. 검토일과 자료 기준일을 확인한다.",
+    "2026-10-22 회사 뉴스룸 및 최신 노출 기사 확인. IR 동적 경영정보 표는 미확인. 주가 출처는 네이버 일봉이며 KRX 직접 대조 미실시."
   ],
   "sources": [
     {
@@ -205,6 +206,16 @@
       "label": "공동 편집 Google Sheets",
       "url": "https://docs.google.com/spreadsheets/d/1I12SpCHfUCVwvdgnbmYZl9CESKvBEHIHbbF9xQsqvvI/edit",
       "date": "2026-10-19"
+    },
+    {
+      "label": "네이버 인바디 일봉 · 거래일 2026-10-22",
+      "url": "https://fchart.stock.naver.com/sise.nhn?symbol=041830&timeframe=day&count=5&requestType=0",
+      "date": "2026-10-22"
+    },
+    {
+      "label": "회사 뉴스룸 · 확인일",
+      "url": "https://inbody.com/kr/ko/company/pr-center/newsroom",
+      "date": "2026-10-22"
     }
   ]
 }
