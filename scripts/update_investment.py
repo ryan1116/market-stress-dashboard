@@ -12,7 +12,7 @@ from datetime import date
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-RANGES=["'Valuation summary'!A1:B49", "'매출성장률'!A4:M34", "'Assumptions'!A1:B16", "'DCF (Normal)'!B4:M29", "'INPUT'!B15:B20", "'최신자료'!A52:B69", "'Net debt'!B22"]
+RANGES=["'Valuation summary'!A1:B49", "'매출성장률'!A4:M34", "'Assumptions'!A1:B16", "'DCF (Normal)'!B4:M29", "'INPUT'!B15:B20", "'최신자료'!A52:B69", "'Net debt'!B22", "'자동데이터'!B5:B12"]
 
 
 def number(data, sheet, row, col):
@@ -37,6 +37,20 @@ def export(data, previous, price_date):
     from datetime import timedelta
     d['model_as_of']=(date(1899,12,30)+timedelta(days=summary(38))).isoformat()
     date.fromisoformat(price_date);d['price']['as_of']=price_date;d['price']['value']=summary(23)
+    # The quote and its date/source travel together; never relabel a live quote as a close.
+    quote_date=(date(1899,12,30)+timedelta(days=n('자동데이터',10))).isoformat()
+    if price_date!=quote_date or summary(23)!=n('자동데이터',9):
+        raise ValueError('Price/date mismatch with automatic-data sheet')
+    source=None
+    for sheet in data['sheets']:
+        if sheet['properties']['title']!='자동데이터': continue
+        for block in sheet.get('data',[]):
+            r=11-block.get('startRow',0);c=1-block.get('startColumn',0)
+            rows=block.get('rowData',[])
+            if 0<=r<len(rows) and 0<=c<len(rows[r].get('values',[])):
+                source=rows[r]['values'][c].get('effectiveValue',{}).get('stringValue')
+    if not source: raise ValueError('Missing automatic price source')
+    d['price']['source']=source
     d['weighted_value']=summary(33)
     for i,s in enumerate(d['scenarios']):
         s.update(value=summary(18+i),weight=summary(29+i),terminal_growth=n('매출성장률',5+i,13),growth=[n('매출성장률',5+i,c) for c in range(3,13)],margins=[n('매출성장률',14+i,c) for c in range(3,13)])
