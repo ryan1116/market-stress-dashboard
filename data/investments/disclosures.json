@@ -1,11 +1,11 @@
 {
   "source": "DART 공시검색",
   "corp_code": "00269922",
-  "as_of": "2026-10-28",
-  "from": "2026-04-28",
-  "to": "2026-10-28",
+  "as_of": "2026-11-02",
+  "from": "2026-05-02",
+  "to": "2026-11-02",
   "includes_corrections": true,
-  "total": 22,
+  "total": 20,
   "items": [
     {
       "date": "2026-10-02",
@@ -166,22 +166,6 @@
       "receipt": "20260507900970",
       "remarks": "코",
       "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260507900970"
-    },
-    {
-      "date": "2026-04-28",
-      "title": "주식등의대량보유상황보고서(일반)",
-      "filer": "차인준",
-      "receipt": "20260428000485",
-      "remarks": "",
-      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428000485"
-    },
-    {
-      "date": "2026-04-28",
-      "title": "주식등의대량보유상황보고서(약식)",
-      "filer": "FILLIMITED",
-      "receipt": "20260428000253",
-      "remarks": "",
-      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260428000253"
     }
   ]
 }
