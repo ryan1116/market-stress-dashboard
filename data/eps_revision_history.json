@@ -94,5 +94,21 @@
     "revision_surprise_60d": null,
     "analyst_revision_breadth_30d": 0.33,
     "positive_company_weight_60d": 0.803
+  },
+  {
+    "as_of": "2026-11-02",
+    "method": "SPY top-holdings weighted signed EPS revision: 100 * (current - prior) / abs(prior)",
+    "revision_formula": "100 * (current - prior) / abs(prior); zero prior excluded",
+    "source": "Alpha Vantage ETF_PROFILE + EARNINGS_ESTIMATES",
+    "coverage_weight": 0.4118,
+    "companies_used": 20,
+    "revision_30d_pct": 0.956,
+    "revision_60d_pct": 1.443,
+    "revision_90d_pct": 2.144,
+    "seasonal_benchmark_60d": null,
+    "baseline_mode": "DISABLED",
+    "revision_surprise_60d": null,
+    "analyst_revision_breadth_30d": 0.372,
+    "positive_company_weight_60d": 0.856
   }
 ]
