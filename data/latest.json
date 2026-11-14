@@ -1,39 +1,39 @@
 {
   "version": "0.2.4",
-  "generated_at": "2026-11-13T02:50:15.159087+00:00",
+  "generated_at": "2026-11-14T02:37:42.104208+00:00",
   "rate_sources": {
     "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
     "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
     "T10YIE": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE"
   },
-  "as_of": "2026-11-10",
+  "as_of": "2026-11-12",
   "regime": "UNDETERMINED",
   "regime_note": "ELEVATED valuation vulnerability + MODERATE discount-rate shock + UNRATED earnings confirmation.",
   "pillars": {
     "valuation": {
       "label": "Valuation Vulnerability",
       "state": "ELEVATED",
-      "equity_yield_gap": 2.87,
-      "forward_earnings_yield": 5.65,
-      "forward_pe": 17.7,
-      "as_of": "2026-11-06",
+      "equity_yield_gap": 2.6,
+      "forward_earnings_yield": 5.46,
+      "forward_pe": 18.3,
+      "as_of": "2026-11-13",
       "source": "FactSet Earnings Insight",
-      "source_url": "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_110626.pdf",
+      "source_url": "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_111326.pdf",
       "date_type": "REPORT_DATE",
-      "real10y": 2.78
+      "real10y": 2.86
     },
     "discount": {
       "label": "Discount-Rate Shock",
       "state": "MODERATE",
-      "real10y": 2.78,
-      "real_1m_change_bp": -13.0,
-      "real_3m_change_bp": 36.0,
+      "real10y": 2.86,
+      "real_1m_change_bp": -2.0,
+      "real_3m_change_bp": 45.0,
       "term_premium": 0.8738,
       "term_premium_1m_change_bp": -21.3,
       "term_premium_as_of": "2026-11-06",
-      "term_premium_quality": "AUTO",
+      "term_premium_quality": "STALE",
       "term_premium_source": "https://fred.stlouisfed.org/series/THREEFYTP10",
-      "breakeven10y": 2.2
+      "breakeven10y": 2.24
     },
     "earnings": {
       "label": "Earnings Confirmation",
@@ -52,16 +52,18 @@
     }
   },
   "context": {
-    "nominal10y": 4.98,
+    "nominal10y": 5.1,
     "ai_credit_premium_bp": 37.0
   },
   "data_quality": {
     "rates": "AUTO",
-    "term_premium": "AUTO",
+    "term_premium": "STALE",
     "forward_pe": "AUTO",
     "earnings": "CURRENT",
     "earnings_source": "AUTO_PROXY",
     "ai_credit": "MANUAL",
-    "warnings": []
+    "warnings": [
+      "Term premium stale: displayed for reference, excluded from shock signal"
+    ]
   }
 }
