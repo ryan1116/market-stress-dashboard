@@ -1,12 +1,28 @@
 {
   "source": "DART 공시검색",
   "corp_code": "00269922",
-  "as_of": "2026-11-10",
-  "from": "2026-05-10",
-  "to": "2026-11-10",
+  "as_of": "2026-11-19",
+  "from": "2026-05-19",
+  "to": "2026-11-19",
   "includes_corrections": true,
-  "total": 23,
+  "total": 24,
   "items": [
+    {
+      "date": "2026-11-16",
+      "title": "분기보고서 (2026.09)",
+      "filer": "인바디",
+      "receipt": "20261116000587",
+      "remarks": "",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116000587"
+    },
+    {
+      "date": "2026-11-13",
+      "title": "주식등의대량보유상황보고서(약식)",
+      "filer": "피델리티매니지먼트앤리서치컴퍼니엘엘씨",
+      "receipt": "20261113000375",
+      "remarks": "",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113000375"
+    },
     {
       "date": "2026-11-10",
       "title": "자기주식처분결과보고서",
@@ -182,14 +198,6 @@
       "receipt": "20260520000230",
       "remarks": "",
       "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260520000230"
-    },
-    {
-      "date": "2026-05-14",
-      "title": "분기보고서 (2026.03)",
-      "filer": "인바디",
-      "receipt": "20260514001453",
-      "remarks": "",
-      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260514001453"
     }
   ]
 }
