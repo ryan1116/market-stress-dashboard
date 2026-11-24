@@ -1,39 +1,39 @@
 {
   "version": "0.2.4",
-  "generated_at": "2026-11-23T03:43:37.825783+00:00",
+  "generated_at": "2026-11-24T06:17:01.410202+00:00",
   "rate_sources": {
     "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
     "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
     "T10YIE": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE"
   },
-  "as_of": "2026-11-19",
+  "as_of": "2026-11-20",
   "regime": "UNDETERMINED",
   "regime_note": "ELEVATED valuation vulnerability + MODERATE discount-rate shock + UNRATED earnings confirmation.",
   "pillars": {
     "valuation": {
       "label": "Valuation Vulnerability",
       "state": "ELEVATED",
-      "equity_yield_gap": 2.97,
+      "equity_yield_gap": 3.08,
       "forward_earnings_yield": 5.85,
       "forward_pe": 17.1,
       "as_of": "2026-11-20",
       "source": "FactSet Earnings Insight",
       "source_url": "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_112026.pdf",
       "date_type": "REPORT_DATE",
-      "real10y": 2.88
+      "real10y": 2.77
     },
     "discount": {
       "label": "Discount-Rate Shock",
       "state": "MODERATE",
-      "real10y": 2.88,
-      "real_1m_change_bp": 11.0,
-      "real_3m_change_bp": 48.0,
+      "real10y": 2.77,
+      "real_1m_change_bp": 1.0,
+      "real_3m_change_bp": 37.0,
       "term_premium": 0.9864,
       "term_premium_1m_change_bp": -5.9,
       "term_premium_as_of": "2026-11-13",
       "term_premium_quality": "STALE",
       "term_premium_source": "https://fred.stlouisfed.org/series/THREEFYTP10",
-      "breakeven10y": 2.16
+      "breakeven10y": 2.15
     },
     "earnings": {
       "label": "Earnings Confirmation",
@@ -52,7 +52,7 @@
     }
   },
   "context": {
-    "nominal10y": 5.04,
+    "nominal10y": 4.92,
     "ai_credit_premium_bp": 37.0
   },
   "data_quality": {
