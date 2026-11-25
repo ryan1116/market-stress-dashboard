@@ -2681,5 +2681,72 @@
         "Term premium stale: displayed for reference, excluded from shock signal"
       ]
     }
+  },
+  {
+    "version": "0.2.4",
+    "generated_at": "2026-11-25T04:59:12.497945+00:00",
+    "rate_sources": {
+      "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
+      "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
+      "T10YIE": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE"
+    },
+    "as_of": "2026-11-23",
+    "regime": "UNDETERMINED",
+    "regime_note": "ELEVATED valuation vulnerability + MODERATE discount-rate shock + UNRATED earnings confirmation.",
+    "pillars": {
+      "valuation": {
+        "label": "Valuation Vulnerability",
+        "state": "ELEVATED",
+        "equity_yield_gap": 3.06,
+        "forward_earnings_yield": 5.85,
+        "forward_pe": 17.1,
+        "as_of": "2026-11-20",
+        "source": "FactSet Earnings Insight",
+        "source_url": "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_112026.pdf",
+        "date_type": "REPORT_DATE",
+        "real10y": 2.79
+      },
+      "discount": {
+        "label": "Discount-Rate Shock",
+        "state": "MODERATE",
+        "real10y": 2.79,
+        "real_1m_change_bp": 13.0,
+        "real_3m_change_bp": 47.0,
+        "term_premium": 0.8888,
+        "term_premium_1m_change_bp": -11.0,
+        "term_premium_as_of": "2026-11-20",
+        "term_premium_quality": "AUTO",
+        "term_premium_source": "https://fred.stlouisfed.org/series/THREEFYTP10",
+        "breakeven10y": 2.13
+      },
+      "earnings": {
+        "label": "Earnings Confirmation",
+        "state": "UNRATED",
+        "source_mode": "AUTO_PROXY",
+        "revision_60d": 3.22,
+        "seasonal_benchmark_60d": null,
+        "revision_surprise": null,
+        "baseline_mode": "DISABLED",
+        "coverage_weight": 0.3942,
+        "companies_used": 20,
+        "quality": "CURRENT",
+        "analyst_revision_breadth": 0.364,
+        "positive_company_weight": 0.834,
+        "as_of": "2026-11-23"
+      }
+    },
+    "context": {
+      "nominal10y": 4.92,
+      "ai_credit_premium_bp": 37.0
+    },
+    "data_quality": {
+      "rates": "AUTO",
+      "term_premium": "AUTO",
+      "forward_pe": "AUTO",
+      "earnings": "CURRENT",
+      "earnings_source": "AUTO_PROXY",
+      "ai_credit": "MANUAL",
+      "warnings": []
+    }
   }
 ]
