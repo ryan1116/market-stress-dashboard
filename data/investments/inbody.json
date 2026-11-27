@@ -4,10 +4,10 @@
   "name": "인바디",
   "currency": "KRW",
   "model_as_of": "2026-10-19",
-  "reviewed_at": "2026-11-26",
+  "reviewed_at": "2026-11-27",
   "price": {
     "value": 46950,
-    "as_of": "2026-11-26",
+    "as_of": "2026-11-27",
     "source": "GOOGLEFINANCE KOSDAQ:041830 · 지연 시세"
   },
   "sheet_url": "https://docs.google.com/spreadsheets/d/1I12SpCHfUCVwvdgnbmYZl9CESKvBEHIHbbF9xQsqvvI/edit",
@@ -200,9 +200,9 @@
     "금융·투자자산 제외는 무가치 판정이 아니다. 비지배지분은 장부가 1배 임시 적용.",
     "신규 사용권자산은 사용자 결정으로 무시. 상각·리스부채와의 불일치가 가치에 영향을 줄 수 있다.",
     "신규 뉴스·공시를 매일 검토했다는 뜻이 아니다. 검토일과 자료 기준일을 확인한다.",
-    "11/26 자동가격 46,950원은 한국경제·이투데이 장종료 값과 일치.",
+    "11/27 자동가격 46,950원은 한국경제·이투데이 장종료 값과 일치.",
     "3분기 보고서상 영업외 순손실 140.32억원, 외화환산 순손실 137.81억원. EBIT 기반 FCFF에서 재차감하지 않음.",
-    "가산 제외 금융·투자자산 장부금액은 반기 기준 유지. DART 6개월 공시 23건 전체 목록 검증 11/26.",
+    "가산 제외 금융·투자자산 장부금액은 반기 기준 유지. DART 6개월 공시 23건 전체 목록 검증 11/27.",
     "11/26 미국 가정용 성장·구독 출시 수치는 회사 발표를 인용한 언론 보도 기준. 회사 직접 원문, 연결매출 대사, 유료 가입자·해지율·수익성은 미확인. 전문가용 성장률에 그대로 적용하지 않음."
   ],
   "sources": [
@@ -214,27 +214,27 @@
     {
       "label": "공동 편집 Google Sheets",
       "url": "https://docs.google.com/spreadsheets/d/1I12SpCHfUCVwvdgnbmYZl9CESKvBEHIHbbF9xQsqvvI/edit",
-      "date": "2026-11-26"
+      "date": "2026-11-27"
     },
     {
       "label": "회사 뉴스룸 · 확인일",
       "url": "https://inbody.com/kr/ko/company/pr-center/newsroom",
-      "date": "2026-11-26"
+      "date": "2026-11-27"
     },
     {
       "label": "한국경제 · 장마감",
       "url": "https://markets.hankyung.com/stock/041830",
-      "date": "2026-11-26"
+      "date": "2026-11-27"
     },
     {
       "label": "이투데이 · 장종료",
       "url": "https://www.etoday.co.kr/market/mkt_stkinfo?varIssCd=041830",
-      "date": "2026-11-26"
+      "date": "2026-11-27"
     },
     {
       "label": "Google Finance 자동가격 · 제공원",
       "url": "https://www.google.com/finance/quote/041830:KOSDAQ",
-      "date": "2026-11-26"
+      "date": "2026-11-27"
     },
     {
       "label": "3Q 잠정실적 원문",
