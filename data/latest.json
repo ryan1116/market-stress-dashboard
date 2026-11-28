@@ -1,37 +1,37 @@
 {
   "version": "0.2.4",
-  "generated_at": "2026-11-27T04:27:13.449839+00:00",
+  "generated_at": "2026-11-28T04:08:10.346844+00:00",
   "rate_sources": {
     "DGS10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
     "DFII10": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10",
     "T10YIE": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE"
   },
-  "as_of": "2026-11-24",
+  "as_of": "2026-11-25",
   "regime": "UNDETERMINED",
   "regime_note": "ELEVATED valuation vulnerability + MODERATE discount-rate shock + UNRATED earnings confirmation.",
   "pillars": {
     "valuation": {
       "label": "Valuation Vulnerability",
       "state": "ELEVATED",
-      "equity_yield_gap": 3.06,
+      "equity_yield_gap": 3.12,
       "forward_earnings_yield": 5.85,
       "forward_pe": 17.1,
       "as_of": "2026-11-20",
       "source": "FactSet Earnings Insight",
       "source_url": "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_112026.pdf",
       "date_type": "REPORT_DATE",
-      "real10y": 2.79
+      "real10y": 2.73
     },
     "discount": {
       "label": "Discount-Rate Shock",
       "state": "MODERATE",
-      "real10y": 2.79,
-      "real_1m_change_bp": 13.0,
-      "real_3m_change_bp": 45.0,
+      "real10y": 2.73,
+      "real_1m_change_bp": 7.0,
+      "real_3m_change_bp": 39.0,
       "term_premium": 0.8888,
       "term_premium_1m_change_bp": -11.0,
       "term_premium_as_of": "2026-11-20",
-      "term_premium_quality": "AUTO",
+      "term_premium_quality": "STALE",
       "term_premium_source": "https://fred.stlouisfed.org/series/THREEFYTP10",
       "breakeven10y": 2.12
     },
@@ -52,16 +52,18 @@
     }
   },
   "context": {
-    "nominal10y": 4.91,
+    "nominal10y": 4.85,
     "ai_credit_premium_bp": 37.0
   },
   "data_quality": {
     "rates": "AUTO",
-    "term_premium": "AUTO",
+    "term_premium": "STALE",
     "forward_pe": "AUTO",
     "earnings": "CURRENT",
     "earnings_source": "AUTO_PROXY",
     "ai_credit": "MANUAL",
-    "warnings": []
+    "warnings": [
+      "Term premium stale: displayed for reference, excluded from shock signal"
+    ]
   }
 }
